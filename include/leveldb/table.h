@@ -45,11 +45,13 @@ namespace leveldb {
         static Iterator* BlockReader(void*, const ReadOptions&, const Slice&);
         explicit  Table(Rep* rep) :rep_(rep) {};
 
+        // 在当前SSTable内部进行查找目标key
         Status InternalGet(const ReadOptions&, const Slice& key, void* arg,
                            void (*handle_result)(void* arg, const Slice& k,
                                                 const Slice& v));
-
+        // 读取meta index block ，其中存了filter block 的 handle
         void ReadMeta(const Footer& footer);
+        // 根据filter block handle读取filter block，并构造一个filter block reader
         void ReadFilter(const Slice& filter_handle_value);
 
 

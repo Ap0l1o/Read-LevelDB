@@ -53,6 +53,7 @@ namespace leveldb {
     public:
         // 当前对象存在期间，contents和policy必须保持有效
         FilterBlockReader(const FilterPolicy* policy, const Slice& contents);
+        // 计算得到data block 由哪个filter进行过滤，并进行过滤
         bool KeyMayMatch(uint64_t block_offset, const Slice& key);
 
     private:

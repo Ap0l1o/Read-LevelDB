@@ -10,7 +10,7 @@
 #include "table/block.h"
 #include "table/filter_block.h"
 #include "table/format.h"
-//#include "table/two_level_iterator.h"
+#include "table/two_level_iterator.h"
 #include "util/coding.h"
 #include "leveldb/comparator.h"
 
@@ -160,6 +160,8 @@ namespace leveldb {
         cache->Release(handle);
     }
 
+    // 根据index value获取data block handle
+    // 然后根据block handle来构造读取对应data block的iterator并返回该迭代器
     Iterator* Table::BlockReader(void* arg, const ReadOptions& options, const Slice& index_value) {
         Table* table = reinterpret_cast<Table*>(arg);
         Cache* block_cache = table->rep_->options.block_cache;
@@ -219,6 +221,78 @@ namespace leveldb {
         }
 
         return iter;
+    }
+
+    // 构造能读取整个SSTable的迭代器并返回
+    Iterator* Table::NewIterator(const ReadOptions &options) const {
+        return NewTwoLevelIterator(
+                rep_->index_block->NewIterator(rep_->options.comparator),
+                &Table::BlockReader,
+                const_cast<Table*>(this),
+                options
+                );
+    }
+
+    // 在当前SSTable内部进行查找目标key
+    Status Table::InternalGet(const ReadOptions &options, const Slice &k, void *arg,
+                              void (*handle_result)(void *, const Slice &, const Slice &)) {
+        Status s;
+        // 先构造index block的迭代器，来定位目标key可能位于的data block
+        Iterator* iiter = rep_->index_block->NewIterator(rep_->options.comparator);
+        // 定位data block
+        iiter->Seek(k);
+        // 成功定位data block
+        if(iiter->Valid()) {
+            // 获取data block的handle
+            Slice handle_value = iiter->value();
+            // 根据data block的offset获取对应的filter进行过滤
+            FilterBlockReader* filter = rep_->filter;
+            BlockHandle handle;
+            if(filter != nullptr && handle.DecodeFrom(&handle_value).ok() &&
+                !filter->KeyMayMatch(handle.offset(), k)) {
+                // filter没有匹配到，pass
+            } else {
+                // filter指示可能存在，进行查找
+                Iterator* block_iter = BlockReader(this, options, iiter->value());
+                block_iter->Seek(k);
+                if(block_iter->Valid()) {
+                    (*handle_result)(arg, block_iter->key(), block_iter->value());
+                }
+                s = block_iter->status();
+                delete block_iter;
+            }
+        }
+        if(s.ok()) {
+            s = iiter->status();
+        }
+        delete iiter;
+        return s;
+    }
+
+    // 定位目标key的位置
+    uint64_t  Table::ApproximateOffset(const Slice &key) const {
+        // 构造index block的迭代器
+        Iterator* index_iter = rep_->index_block->NewIterator(rep_->options.comparator);
+        // 定位data block
+        index_iter->Seek(key);
+        uint64_t result;
+        if(index_iter->Valid()) {
+            // 获取定位到的data block的handle
+            BlockHandle handle;
+            Slice input = index_iter->value();
+            Status s = handle.DecodeFrom(&input);
+            if(s.ok()) {
+                // 获取位置，也即定位到的data block的offset
+                result = handle.offset();
+            } else {
+                // 找不到则返回metaindex block的offset
+                result = rep_->metaindex_handle.offset();
+            }
+        } else {
+            result = rep_->metaindex_handle.offset();
+        }
+        delete index_iter;
+        return result;
     }
 
 } // end namespace leveldb

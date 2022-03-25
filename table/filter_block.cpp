@@ -99,7 +99,8 @@ namespace leveldb {
         // 计算filter的数量，其数量等于其索引的数量，每个索引占4个字节（Fixed32占4个字节）
         num_ = (n - 5 - last_word) / 4;
     }
-
+    // 每2KB数据生成一个filter，根据data block 的 offset来计算当前data block由
+    // 哪个filter进行过滤，并进行过滤匹配
     bool FilterBlockReader::KeyMayMatch(uint64_t block_offset, const Slice &key) {
         // 计算索引
         uint64_t  index = block_offset >> base_lg_;
