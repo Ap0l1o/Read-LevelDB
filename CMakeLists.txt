@@ -28,7 +28,7 @@ INCLUDE_DIRECTORIES(
         "include"
 )
 
-ADD_LIBRARY(leveldb "" table/filter_block.cpp include/leveldb/table_builder.h table/table_builder.cpp include/leveldb/env.h util/env.cpp include/leveldb/table.h table/table.cpp include/leveldb/cache.h table/two_level_iterator.h table/two_level_iterator.cpp table/iterator_wrapper.h)
+ADD_LIBRARY(leveldb "" table/filter_block.cpp include/leveldb/table_builder.h table/table_builder.cpp include/leveldb/env.h util/env.cpp include/leveldb/table.h table/table.cpp include/leveldb/cache.h table/two_level_iterator.h table/two_level_iterator.cpp table/iterator_wrapper.h util/cache.cpp port/thread_annotations.h util/mutexlock.h port/port_stdcxx.h)
 TARGET_SOURCES(leveldb
         PRIVATE
         "db/dbformat.cc"

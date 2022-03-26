@@ -1,0 +1,5 @@
+# ninja log v5
+4	1926	1648295440958389845	CMakeFiles/leveldb.dir/util/cache.cpp.o	4839ae02b65c91ff
+2	1986	1648295441015873959	CMakeFiles/leveldb.dir/util/env.cpp.o	989e2677ff71268b
+1	2060	1648295441092643993	CMakeFiles/leveldb.dir/table/filter_block.cpp.o	d9bedef5ba00ebbd
+12	2436	1648295445073308165	CMakeFiles/leveldb.dir/db/log_reader.cc.o	e96f2d64d2f8c8f9
