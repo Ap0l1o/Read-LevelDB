@@ -77,6 +77,10 @@ namespace leveldb {
         return DoWriteStringToFile(env, data, fname, false);
     }
 
+    Status WriteStringToFileSync(Env* env, const Slice& data, const std::string& fname) {
+        return DoWriteStringToFile(env, data, fname, true);
+    }
+
     Status ReadFileToString(Env* env, const std::string& fname, std::string& data) {
         data.clear();
         // 创建顺序读的文件对象

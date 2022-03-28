@@ -36,10 +36,15 @@ namespace leveldb {
         // entry是可变长度的堆分配的结构。entry保存在按访问时间排序的循环双向链表中。
         struct LRUHandle {
             void* value;
+            // 当引用为0时调用此函数完成KV对的释放
             void (*deleter)(const Slice&, void* value);
+            // 作为HashTable的节点时使用，也即此指针为HashTable中的链接点，指向hash值相同的节点
+            // 也即使用链地址法来解决哈希冲突。
             LRUHandle* next_hash;
+            // 下面两个指针是当节点作为LRU中的节点时使用，分别指向前驱和后继
             LRUHandle* next;
             LRUHandle* prev;
+            // 用户指定占用缓存的大小
             size_t charge;
             size_t key_length;
             // entry是否在缓存中
@@ -48,7 +53,7 @@ namespace leveldb {
             uint32_t refs;
             // key的哈希值，用于快速分片和比较
             uint32_t hash;
-            // key的开头
+            // key的开头，也即key的指针
             char key_data[1];
 
             Slice key() const {
@@ -58,6 +63,7 @@ namespace leveldb {
 
         };
 
+        // 哈希表，用于缓存的快速查找
         class HandleTable {
         public:
             HandleTable() : length_(0), elems_(0), list_(nullptr) { Resize(); }
@@ -68,7 +74,8 @@ namespace leveldb {
                 return *FindPointer(key, hash);
             }
 
-            // 向缓存链表中插入一个缓存项
+            // 向缓存链表中插入一个缓存项，若链表中存在相同key的缓存项，
+            // 则替代该缓存项，并将旧的缓存项返回
             LRUHandle* Insert(LRUHandle* h) {
 
                 // 具体过程为先找到bucket，再在bucket中找插入位置，
@@ -160,7 +167,7 @@ namespace leveldb {
             }
         };
 
-        // 分片缓存的单个分片
+        // LRUCache是ShardedLRUCache分片缓存的一个分片
         class LRUCache {
         public:
             LRUCache();
@@ -194,8 +201,12 @@ namespace leveldb {
             // 以下变量使用线程安全注解，GUARDED_BY(mutex_) 表示这些成员变量
             // 受mutex_保护
             size_t usage_ GUARDED_BY(mutex_);
+            // LRU链表的头节点，lru_.prev始终指向最新的节点，
+            // lru_.next指向最早的节点，其中的每个LRUHandle节点的refs == 1，in_cache == true
             LRUHandle lru_ GUARDED_BY(mutex_);
+            // in-use链表的头节点，其中的节点是客户端正在使用的，其中每个LRUHandle节点的refs >= 2 , in_cache == true
             LRUHandle in_use_ GUARDED_BY(mutex_);
+            // 维护一个哈希表，缓存存入的数据也存入此哈希表，用于提高缓存的查询速度
             HandleTable table_ GUARDED_BY(mutex_);
         };
 
@@ -287,6 +298,7 @@ namespace leveldb {
                 e->in_cache = true;
                 LRU_Append(&in_use_, e);
                 usage_ += charge;
+                // 插入HashTable，并将其返回的旧节点删除
                 FinishErase(table_.Insert(e));
             } else {
                 // 不需要缓存，capacity_==0表示不支持并关掉了缓存
@@ -333,9 +345,95 @@ namespace leveldb {
         }
 
         static const int kNumShardBits = 4;
+        // 1 << 4  = 二进制(10000) = 十进制(16)
+        // SharedLRUCache封装了16个LRUCache缓存分片，每次对缓存的
+        // 读取、插入和删除操作都是调用某个LRUCache缓存分片中的相应方法完成。
         static const int kNumShards = 1 << kNumShardBits;
 
+        class ShardedLRUCache : public Cache {
+        private:
+            // 一个ShardedLRUCache由16个LRUCache缓存分片组成（可以减少锁开销），
+            // shard_便是该缓存分片数组。
+            LRUCache shard_[kNumShards];
+            port::Mutex id_mutex_;
+            uint64_t last_id_;
+
+            static inline uint32_t HashSlice(const Slice& s) {
+                return Hash(s.data(), s.size(), 0);
+            }
+
+            // 本函数用于计算应该将hash对应的KV数据存放在哪个LRUCache分片中
+            static uint32_t Shard(uint32_t hash) {
+                // hash是32位，右移32-kNumShardBits，相当于对kNumShards取余
+                return hash >> (32 - kNumShardBits);
+            }
+
+        public:
+            explicit ShardedLRUCache(size_t capacity) : last_id_(0) {
+                // 计算每个缓存分片的容量
+                const size_t per_shared = (capacity + (kNumShardBits - 1)) / kNumShards;
+                // 设置每个缓存分片的容量
+                for(int s = 0; s < kNumShards; s++) {
+                    shard_[s].SetCapacity(per_shared);
+                }
+            }
+            ~ShardedLRUCache() override {}
+
+            // 将KV数据插入缓存分片
+            Handle* Insert(const Slice& key, void* value, size_t charge,
+                           void (*deleter)(const Slice& key, void* value)) override {
+                // 计算哈希值
+                const uint32_t hash = HashSlice(key);
+                // 插入对应的缓存分片
+                return shard_[Shard(hash)].Insert(key, hash, value, charge, deleter);
+            }
+
+            // 查找key
+            Handle* Lookup(const Slice& key) override {
+                const uint32_t hash = HashSlice(key);
+                return shard_[Shard(hash)].Lookup(key, hash);
+            }
+
+            void Release(Handle* handle) override {
+                LRUHandle* h = reinterpret_cast<LRUHandle*>(handle);
+                shard_[Shard(h->hash)].Release(handle);
+            }
+
+            void Erase(const Slice& key) override {
+                const uint32_t hash = HashSlice(key);
+                shard_[Shard(hash)].Erase(key, hash);
+            }
+
+            void* Value(Handle* handle) override {
+                return reinterpret_cast<LRUHandle*>(handle)->value;
+            }
+
+            uint64_t NewId() override {
+                MutexLock l(&id_mutex_);
+                return ++(last_id_);
+            }
+
+            void Prune() override {
+                for(int s = 0; s < kNumShards; s++) {
+                    shard_[s].Prune();
+                }
+            }
+
+            size_t TotalCharge() const override {
+                size_t total = 0;
+                for(int s = 0; s < kNumShards; s++) {
+                    total += shard_[s].TotalCharge();
+                }
+                return total;
+            }
+
+        };
 
     } // end namespace
+
+    // 返回一个ShardedLRUCache
+    Cache* NewLRUCache(size_t capacity) {
+        return new ShardedLRUCache(capacity);
+    }
 
 } // end namespace leveldb

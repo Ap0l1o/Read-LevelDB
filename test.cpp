@@ -3,7 +3,9 @@
 #include <cstddef>
 int main()
 {
-    size_t s = 10;
-    std::cout<<"size_t: "<<s<<std::endl;
+    int num = 22;
+    char buf[30];
+    std::snprintf(buf, sizeof(buf), "%llu", static_cast<unsigned long long>(num));
+    std::cout<<buf<<std::endl;
 }
 
