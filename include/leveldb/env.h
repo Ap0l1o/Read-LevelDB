@@ -165,7 +165,7 @@ namespace leveldb {
 
         virtual ~RandomAccessFile();
 
-        virtual Status Read(uint64_t offset, size_t n, Slice* result, char* scratch) = 0;
+        virtual Status Read(uint64_t offset, size_t n, Slice* result, char* scratch) const = 0;
     };
 
     // 用于顺序写文件的文件抽象
