@@ -33,6 +33,7 @@
 #include "port/port.h"
 #include "port/thread_annotations.h"
 #include "port/port_stdcxx.h"
+#include "util/posix_logger.h"
 
 namespace leveldb {
 
