@@ -205,7 +205,7 @@ namespace leveldb {
     };
 
     // 如果*info_log不为空， 则将指定的数据记录到*info_log
-    void Log(Logger** info_log, const char* format, ...)
+    void Log(Logger* info_log, const char* format, ...)
 #if defined(__GNUC__) || defined(__clang__)
     __attribute__((__format__(__printf__, 2, 3)))
 #endif

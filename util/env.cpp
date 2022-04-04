@@ -81,8 +81,8 @@ namespace leveldb {
         return DoWriteStringToFile(env, data, fname, true);
     }
 
-    Status ReadFileToString(Env* env, const std::string& fname, std::string& data) {
-        data.clear();
+    Status ReadFileToString(Env* env, const std::string& fname, std::string* data) {
+        data->clear();
         // 创建顺序读的文件对象
         SequentialFile* file;
         Status s = env->NewSequentialFile(fname, &file);
@@ -101,7 +101,7 @@ namespace leveldb {
             if(!s.ok()) {
                 break;
             }
-            data.append(fragment.data(), fragment.size());
+            data->append(fragment.data(), fragment.size());
             if(fragment.empty()) {
                 break;
             }

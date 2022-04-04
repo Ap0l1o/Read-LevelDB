@@ -88,22 +88,25 @@
 				18,
 				20,
 				21,
-				24,
+				26,
 				27,
 				29,
-				31,
+				30,
+				33,
 				35,
-				38,
-				40,
-				42,
-				43,
-				45,
+				37,
+				41,
+				44,
 				46,
 				48,
 				49,
 				51,
 				52,
-				54
+				54,
+				55,
+				57,
+				58,
+				60
 			]
 		}
 	],
@@ -131,22 +134,25 @@
 				18,
 				20,
 				21,
-				24,
+				26,
 				27,
 				29,
-				31,
+				30,
+				33,
 				35,
-				38,
-				40,
-				42,
-				43,
-				45,
+				37,
+				41,
+				44,
 				46,
 				48,
 				49,
 				51,
 				52,
-				54
+				54,
+				55,
+				57,
+				58,
+				60
 			]
 		},
 		{
@@ -167,27 +173,30 @@
 				19,
 				22,
 				23,
+				24,
 				25,
-				26,
 				28,
-				30,
+				31,
 				32,
-				33,
 				34,
 				36,
-				37,
+				38,
 				39,
-				41,
-				44,
+				40,
+				42,
+				43,
+				45,
 				47,
 				50,
 				53,
-				55,
 				56,
-				57,
-				58,
 				59,
-				60
+				61,
+				62,
+				63,
+				64,
+				65,
+				66
 			]
 		}
 	],
@@ -322,6 +331,39 @@
 			"backtrace" : 1,
 			"path" : "util/env_posix_test_helper.h",
 			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "db/version_edit.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "db/version_set.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "db/version_edit.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "db/version_set.cpp",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"path" : "table/merger.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
+			"path" : "table/merger.cpp",
+			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 3,
