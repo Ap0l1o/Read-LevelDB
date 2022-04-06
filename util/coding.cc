@@ -29,13 +29,13 @@ namespace leveldb {
         char buffer[5]; 
         // 返回的ptr是buffer指向的地址不断递增的结果，因为Varint是变长的，其指向存储数据的最后那个地址
         char* ptr = EncodeVarint32(buffer, value); 
-        dst->append(buffer, ptr-buffer); // Varint32的实际长度用ptr-buffer来计算
+        dst->append(buffer, ptr - buffer); // Varint32的实际长度用ptr-buffer来计算
     }
 
     void PutVarint64(std::string* dst, uint64_t value) {
         char buffer[10];
         char* ptr = EncodeVarint64(buffer, value);
-        dst->append(buffer, ptr-buffer);
+        dst->append(buffer, ptr - buffer);
     }
     // 此函数将Slice数据的长度编码为Varint32格式后作为前缀放在其前面
     void PutLengthPrefixedSlice(std::string* dst, const Slice& value) {

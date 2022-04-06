@@ -28,7 +28,7 @@ INCLUDE_DIRECTORIES(
         "include"
 )
 
-ADD_LIBRARY(leveldb "" table/filter_block.cpp include/leveldb/table_builder.h table/table_builder.cpp include/leveldb/env.h util/env.cpp include/leveldb/table.h table/table.cpp include/leveldb/cache.h table/two_level_iterator.h table/two_level_iterator.cpp table/iterator_wrapper.h util/cache.cpp port/thread_annotations.h util/mutexlock.h port/port_stdcxx.h db/table_cache.h db/table_cache.cpp db/filename.h db/filename.cpp util/logging.h util/logging.cpp util/env_posix.cc util/posix_logger.h util/env_posix_test_helper.h db/version_edit.h db/version_set.h db/version_edit.cpp db/version_set.cpp table/merger.h table/merger.cpp)
+ADD_LIBRARY(leveldb "" table/filter_block.cpp include/leveldb/table_builder.h table/table_builder.cpp include/leveldb/env.h util/env.cpp include/leveldb/table.h table/table.cpp include/leveldb/cache.h table/two_level_iterator.h table/two_level_iterator.cpp table/iterator_wrapper.h util/cache.cpp port/thread_annotations.h util/mutexlock.h port/port_stdcxx.h db/table_cache.h db/table_cache.cpp db/filename.h db/filename.cpp util/logging.h util/logging.cpp util/env_posix.cc util/posix_logger.h util/env_posix_test_helper.h db/version_edit.h db/version_set.h db/version_edit.cpp db/version_set.cpp table/merger.h table/merger.cpp db/builder.h db/builder.cpp include/leveldb/db.h include/leveldb/dumpfile.h db/dumpfile.cpp include/leveldb/write_batch.h db/write_batch_internal.h db/write_batch.cpp db/snapshot.h)
 TARGET_SOURCES(leveldb
         PRIVATE
         "db/dbformat.cc"
