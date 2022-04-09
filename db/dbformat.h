@@ -24,7 +24,7 @@ namespace leveldb {
         static const int kL0_SlowdownWriteTriger = 8;
         // Level-0 的最大文件数量，此时将停止写入
         static const int kL0_StopWritesTrigger = 12;
-        // Compaction执行的结果最大将被push到哪个level
+        // Minor Compaction输出的sstable最大将被放置到哪个level
         // Maximum level to which a new compacted memtable is pushed if it
         // does not create overlap.  We try to push to level 2 to avoid the
         // relatively expensive level 0=>1 compactions and to avoid some

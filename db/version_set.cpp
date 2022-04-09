@@ -527,19 +527,22 @@ namespace leveldb {
                                      smallest_user_key, largest_user_key);
     }
 
-    // 返回应该放置compaction输出的level，compaction输出的memtable覆盖范围为[smallest_user_key, largest_user_key]
+    // 返回compaction输出的sstable应该放置到哪个level，compaction输出的sstable覆盖范围为[smallest_user_key, largest_user_key]
     int Version::PickLevelForMemTableOutput(const Slice &smallest_user_key, const Slice &largest_user_key) {
         int level = 0;
-        // 检查是否和level 0有重叠
+        // 检查是否和level 0有重叠，无重叠则往深层level放置，有重叠则直接放到level-0，并返回level-0
         if(!OverlapInLevel(0, &smallest_user_key, &largest_user_key)) {
             // 如果和next level没有重叠，则放到next level，并且在之后的level的重叠字节是有限的
             InternalKey start(smallest_user_key, kMaxSequenceNumber, kValueTypeForSeek);
             InternalKey limit(largest_user_key, 0, static_cast<ValueType>(0));
             std::vector<FileMetaData*> overlaps;
-            while(level < config::kNumLevels) {
+            // 最深放置到kMaxMemCompactLevel
+            while(level < config::kMaxMemCompactLevel) {
+                // 与level+1有重叠，则放置到level+1
                 if(OverlapInLevel(level + 1, &smallest_user_key, &largest_user_key)) {
                     break;
                 }
+                // 与level+2重叠的数量过多，则直接返回
                 if(level + 2 < config::kNumLevels) {
                     GetOverlappingInputs(level + 2, &start, &limit, &overlaps);
                     const int64_t sum = TotalFileSize(overlaps);
@@ -689,7 +692,7 @@ namespace leveldb {
             }
         }
 
-        // 将edit中的修改应用到当前状态中
+        // 将edit中的修改保存到Builder的LevelState
         void Apply(VersionEdit* edit) {
             // 更新compaction pointers
             for(size_t i = 0; i < edit->compact_pointers_.size(); i++) {
@@ -730,7 +733,7 @@ namespace leveldb {
             }
         }
 
-        // 将当前状态保存到*v中
+        // 将当前Builder保存的LevelState应用到Version *v中
         void SaveTo(Version* v) {
             BySmallestKey cmp;
             cmp.internal_comparator = &vset_->icmp_;
@@ -877,7 +880,7 @@ namespace leveldb {
         if(descriptor_log_ == nullptr) {
             assert(descriptor_file_ == nullptr);
             // 创建MANIFEST文件
-            new_manifest_file = DescriptionFileName(dbname_, manifest_file_number_); // 获取文件名
+            new_manifest_file = DescriptorFileName(dbname_, manifest_file_number_); // 获取文件名
             edit->SetNextFile(next_file_number_);
             s = env_->NewWritableFile(new_manifest_file, &descriptor_file_); // 创建文件
             if(s.ok()) {
@@ -945,7 +948,7 @@ namespace leveldb {
             }
         };
 
-        // 读取CURRENT文件，CURRENT文件记录了当前的MANIFEST文件名(MANIFEST文件存储的是VersionSet)
+        // 读取CURRENT文件，CURRENT文件记录了当前的MANIFEST文件名(MANIFEST文件存储的是VersionEdit)
         // 读取结果存到current。
         std::string current;
         Status s = ReadFileToString(env_, CurrentFileName(dbname_), &current);
@@ -991,7 +994,7 @@ namespace leveldb {
             // 开始读取MANIFEST文件，每次将读到的结构存到scratch，然后根据scratch构造Slice record
             while(reader.ReadRecord(&record, &scratch) && s.ok()) {
                 ++read_records;
-                // 读取一条VersionEdit record, MANIFEST是以log形式写入的VersionEdit文件
+                // 读取一条VersionEdit record, MANIFEST是以log形式追加写入的VersionEdit文件
                 VersionEdit edit;
                 s = edit.DecodeFrom(record);
                 if(s.ok()) {
@@ -1050,7 +1053,7 @@ namespace leveldb {
 
         if(s.ok()) {
             Version* v = new Version(this);
-            // 将从MANIFEST文件读取到的VersionEdit全部存到v中
+            // 将从MANIFEST文件读取到的VersionEdit全部应用到这个新的Version v中
             builder.SaveTo(v);
             // 将此Version添加到VersionSet作为CURRENT
             Finalize(v);
@@ -1235,6 +1238,7 @@ namespace leveldb {
         return result;
     }
 
+    // 将所有live file的编号添加到*live
     void VersionSet::AddLiveFiles(std::set<uint64_t> *live) {
         for(Version* v = dummy_versions_.next_; v != &dummy_versions_; v = v->next_) {
             for(int level = 0; level < config::kNumLevels; level++) {
@@ -1561,6 +1565,7 @@ namespace leveldb {
     // 构造并返回一个在指定level上对范围[begin, end]执行compaction的compaction对象。
     // 也即根据compaction range 构造Compaction对象。
     Compaction* VersionSet::CompactRange(int level, const InternalKey *begin, const InternalKey *end) {
+        // 根据键值范围，获取与该范围有重叠的文件，这些重叠文件将作为compact的输入
         std::vector<FileMetaData*> inputs;
         current_->GetOverlappingInputs(level, begin, end, &inputs);
         if(inputs.empty()) {

@@ -26,7 +26,7 @@ namespace leveldb {
 
         static void SetSequence(WriteBatch* batch, SequenceNumber seq);
 
-        static Slice Contents(const WriteBatch* batch, SequenceNumber seq) {
+        static Slice Contents(const WriteBatch* batch) {
             return Slice(batch->rep_);
         }
 

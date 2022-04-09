@@ -40,7 +40,7 @@ namespace leveldb {
 
     // 返回名称为dbname的数据库中编号为number的descriptor file的文件名；
     // 文件名的前缀为dbname
-    std::string DescriptionFileName(const std::string& dbname, uint64_t number);
+    std::string DescriptorFileName(const std::string& dbname, uint64_t number);
 
     // 返回名称为dbname的数据中的current file的文件名，此文件包含了current manifest file的文件名；
     // 文件名的前缀为dbname

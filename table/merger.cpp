@@ -63,6 +63,11 @@ namespace leveldb {
 
             void Next() override {
                 assert(Valid());
+                // 确保所有的子迭代器的当前位置都在key()后面，然后使current_指向最小key的那个子迭代器。
+                // 1. 如果移动方向为kForward的话，则除了current_所指向的最小子迭代器满足key() == current_->key(),
+                //    其他的子迭代器均满足上述条件，因此只需要将current_进行Next()操作；
+                // 2. 如果移动方向为kReverse，则每个子迭代器都需要进行移动定位；
+                // 子迭代器都移动完成之后找出最小key的子迭代器。
                 if(direction_ != kForward) {
                     for(int i = 0; i < n_; i++) {
                         IteratorWrapper* child = &children_[i];
@@ -77,10 +82,17 @@ namespace leveldb {
                     direction_ = kForward;
                 }
                 current_->Next();
+                // 子迭代器都移动完了后，找出最小key的子迭代器。
                 FindSmallest();
             }
 
             void Prev() override {
+                assert(Valid());
+                // 确保所有子迭代器的当前位置都在key()的前面，然后使current_指向最大key的子迭代器。
+                // 1. 如果当前移动方向为kReverse，则除了current_所指向的子迭代器外均已满足条件，
+                //    此时current_->key() == key(), 只需将current_执行Prev()操作；
+                // 2. 如果当前的移动方向为kForward，则每个子迭代器都需要进行移动定位；
+                // 子迭代器都移动完成之后找出最大key的子迭代器。
                 if(direction_ != kReverse) {
                     for(int i = 0; i < n_; i++) {
                         IteratorWrapper* child = &children_[i];
@@ -97,6 +109,7 @@ namespace leveldb {
                 }
 
                 current_->Prev();
+                // 子迭代器都移动完了后，找出最大key的子迭代器。
                 FindLargest();
             }
 
@@ -124,9 +137,9 @@ namespace leveldb {
         private:
             enum Direction { kForward, kReverse };
 
-            // 让current_指向所有子迭代器结果最小的那个子迭代器
+            // 让current_指向所有子迭代器key最小的那个子迭代器
             void FindSmallest();
-            // 让current_指向所有子迭代器结果最大的那个子迭代器
+            // 让current_指向所有子迭代器key最大的那个子迭代器
             void FindLargest();
 
             const Comparator* comparator_;

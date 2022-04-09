@@ -57,9 +57,13 @@ namespace leveldb {
         return dbname + "/LOCK";
     }
 
-    std::string TempFilename(const std::string& dbname, uint64_t number) {
+    std::string TempFileName(const std::string& dbname, uint64_t number) {
         assert(number > 0);
         return MakeFileName(dbname, number, "dbtmp");
+    }
+
+    std::string InfoLogFileName(const std::string& dbname) {
+        return dbname + "/LOG";
     }
 
     std::string OldInfoLogFileName(const std::string& dbname) {

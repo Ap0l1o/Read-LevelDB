@@ -373,8 +373,8 @@ namespace leveldb {
         // 就能完成compaction，也即不需要合并或分割。
         bool IsTrivialMove() const;
 
-        // 将所有的inputs全部添加到此次compaction操作，作为一个delete操作，
-        // 并通过*edit记录此次操作。
+        // 将所有的inputs全部添加到此次compaction操作，作为一个delete操作，也即删除所有的input文件，
+        // 并记录在*edit中。
         void AddInputDeletions(VersionEdit* edit);
 
         // 若能保证user_key是compaction正在输出到level+1的数据，且在更深层的level中不存在相同key，

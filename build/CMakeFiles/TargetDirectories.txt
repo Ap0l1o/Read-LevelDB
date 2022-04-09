@@ -1,0 +1,3 @@
+/Users/Ap0l1o/project/LLevelDB/build/CMakeFiles/leveldb.dir
+/Users/Ap0l1o/project/LLevelDB/build/CMakeFiles/edit_cache.dir
+/Users/Ap0l1o/project/LLevelDB/build/CMakeFiles/rebuild_cache.dir

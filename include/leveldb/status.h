@@ -48,7 +48,7 @@ namespace leveldb {
         static Status InvalidArgument(const Slice& msg, const Slice& msg2 = Slice()) {
             return Status(kInvalidArgument, msg, msg2);
         }
-        static Status IOError(const Slice& msg, const Slice& msg2) {
+        static Status IOError(const Slice& msg, const Slice& msg2 = Slice()) {
             return Status(kIOError, msg, msg2);
         }
 
