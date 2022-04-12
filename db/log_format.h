@@ -22,7 +22,9 @@ namespace leveldb{
 
         // record类型的最大值
         static const int kMaxRecordType = kLastType;
-        // 1024B * 32 = 32768, block大小为32KB
+        // 1024B * 32 = 32768, block大小为32KB；
+        // leveldb对于一个log文件，会把它切割成以32KB为单位的物理BLock，每次读取以
+        // 一个Block作为基本读取单位。一个record可能会占用几个Block。
         static const int kBlockSize = 32768;
         // Header is checksum (4 bytes), length (2 bytes), type (1 byte).
         static const int kHeaderSize = 4 + 2 + 1;

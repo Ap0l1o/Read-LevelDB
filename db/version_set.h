@@ -16,10 +16,9 @@
 #include "port/port_stdcxx.h"
 
 /**
- * 一个 version 维护整个系统中某个时期的快照，其中包括相应时间点的所有sstable文件的元数据。
- * - VersionSet 维护了所有有效的 version，内部采用双链表的结构来维护。
+ * - 一个 Version 维护整个系统中某个时期的快照，其中包括相应时间点的所有sstable文件的元数据。
+ * - VersionSet 维护了所有有效的 version，内部采用双链表的结构来维护，其中的current指向最新版本的Version。
  * - VersionEdit 维护了最近对文件的改动，包括新增的文件和删除的文件。
- * - CURRENT指向最新的Version。
  * LevelDB 会触发 Compaction，能对一些文件进行清理操作，让数据更加有序，清理后的数据放到新的版本里面，
  * 而老的数据作为旧数据，最终是要清理掉的，但是如果有读事务位于旧的文件，那么暂时就不能删除。因此利用
  * 引用计数，只要一个 Verison 还活着，就不允许删除该 Verison 管理的所有文件。当一个 Version 生命周期
@@ -175,7 +174,7 @@ namespace leveldb {
         Iterator* NewConcatenatingIterator(const ReadOptions&, int level) const;
 
         /**
-         * 对每个与user_key有重叠的file调用func(arg, level, f)
+         * 查找覆盖user_key的SSTable文件，然后对查找到的SSTable文件调用函数func(arg, level, f)
          * @param user_key
          * @param internal_key
          * @param arg
@@ -186,6 +185,7 @@ namespace leveldb {
 
         // 此Version所属的VersionSet
         VersionSet* vset_;
+        // version之间组成一个双向链表，vset_中的current指向最新的version
         Version* next_;
         Version* prev_;
         // 此Version的引用数量
@@ -194,6 +194,8 @@ namespace leveldb {
         // 每一个level中的file
         std::vector<FileMetaData*> files_[config::kNumLevels];
 
+        // 基于查询状态（也即因为无效查询次数过多所触发compact）所选择的下次要执行compact的
+        // sstable文件以及其所在level
         FileMetaData* file_to_compact_;
         int file_to_compact_level_;
 
@@ -332,18 +334,28 @@ namespace leveldb {
          Env* const env_;
          const std::string dbname_;
          const Options* const options_;
+         // TableCache
          TableCache* const table_cache_;
          const InternalKeyComparator icmp_;
+         // 下一个文件的编号
          uint64_t next_file_number_;
+         // 当前manifest文件的编号
          uint64_t manifest_file_number_;
+         // 上一个key的序号
          uint64_t last_sequence_;
+         // 日志文件编号
          uint64_t log_number_;
          uint64_t prev_log_number_;
 
-         // Opened lazily
+         // manifest文件
          WritableFile* descriptor_file_;
+         // 对manifest文件的封装，将其封装为一个日志文件，VersionEdit序列化
+         // 后会被追加写入此日志文件。在第一次创建并打开一个manifest文件时，将其
+         // 指向封装为Writer的manifest文件。
          log::Writer* descriptor_log_;
+         // Version双向链表的头节点
          Version dummy_versions_;
+         // 指向当前最新的Version
          Version* current_;
 
          // 每个level的下一次compaction操作的起始key

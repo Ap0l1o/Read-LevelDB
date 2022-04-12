@@ -6,7 +6,7 @@
 #include <string>
 
 #include "leveldb/comparator.h"
-//#include "leveldb/db.h"
+#include "leveldb/db.h"
 #include "leveldb/filter_policy.h"
 #include "leveldb/slice.h"
 #include "leveldb/table_builder.h"
@@ -171,7 +171,7 @@ namespace leveldb {
         return (c <= static_cast<uint8_t>(kTypeValue));
     }
 
-    // 工具类，用于执行Get()
+    // 工具类，用于在Memtable中执行Get()
     class LookupKey {
         public:
         LookupKey(const Slice& user_key, SequenceNumber sequence);

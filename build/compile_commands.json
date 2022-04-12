@@ -91,6 +91,11 @@
 },
 {
   "directory": "/Users/Ap0l1o/project/LLevelDB/build",
+  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/options.cpp.o -c /Users/Ap0l1o/project/LLevelDB/util/options.cpp",
+  "file": "/Users/Ap0l1o/project/LLevelDB/util/options.cpp"
+},
+{
+  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
   "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/dbformat.cc.o -c /Users/Ap0l1o/project/LLevelDB/db/dbformat.cc",
   "file": "/Users/Ap0l1o/project/LLevelDB/db/dbformat.cc"
 },

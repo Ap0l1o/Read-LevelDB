@@ -38,11 +38,10 @@ namespace leveldb {
 
     }
 
-    // 序列化，编码存到*dst
+    // 序列化，序列化后的数据存到*dst
     void VersionEdit::EncodeTo(std::string *dst) const {
 
-        // 先编码类型
-
+        // 先对类型编码
         if(has_comparator_) {
             PutVarint32(dst, kCompactPointer);
             PutLengthPrefixedSlice(dst, comparator_);
@@ -73,8 +72,9 @@ namespace leveldb {
             PutLengthPrefixedSlice(dst, compact_pointers_[i].second.Encode());
         }
 
-        // 在编码剩下的其他数据
+        // 再编码剩下的其他数据
 
+        // 写入删除的文件信息
         for(const auto& deleted_file_kvp : deleted_files_) {
             PutVarint32(dst, kDeleteFile);
             // level
@@ -83,6 +83,7 @@ namespace leveldb {
             PutVarint64(dst, deleted_file_kvp.second);
         }
 
+        // 写入新增加的文件的信息
         for(size_t i = 0; i < new_files_.size(); i++) {
             const FileMetaData& f = new_files_[i].second;
             PutVarint32(dst, kNewFile);

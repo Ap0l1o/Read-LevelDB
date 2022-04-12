@@ -61,7 +61,7 @@ namespace leveldb {
         if(options.paranoid_checks) {
             opt.verify_checksums = true;
         }
-        // 随机读到index block contents
+        // 通过随机读来获取index block contents
         s = ReadBlock(file, opt, footer.index_handle(), &index_block_contents);
 
         if(s.ok()) {

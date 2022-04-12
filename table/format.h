@@ -7,7 +7,7 @@
 #include "leveldb/slice.h"
 #include "leveldb/status.h"
 #include "leveldb/options.h"
-//#include "leveldb/table_builder.h"
+#include "leveldb/table_builder.h"
 
 namespace leveldb {
 
@@ -19,12 +19,13 @@ namespace leveldb {
     class BlockHandle {
 
         public:
-        // BlockHandle的最长编码长度
+        // BlockHandle的最长编码长度，包含两个uint64_t类型的offset_和size_，
+        // 编码为Varint64后最多每个占用10个字节，所以两个最多占用20个字节
         enum { kMaxEncodedLength = 10 + 10 };
 
         BlockHandle();
         // 获取block 在文件中的偏移位置
-        uint64_t offset() { return offset_; }
+        uint64_t offset() const { return offset_; }
         // 设置位置偏移
         void set_offset(uint64_t offset) { offset_ = offset; }
 
@@ -49,7 +50,8 @@ namespace leveldb {
     class Footer {
 
         public:
-        // Footer的编码长度，包括两个block handle和一个magic number
+        // Footer的编码长度，包括两个block handle和一个magic number，共48字节，不够的话
+        // 用padding填充。
         enum { kEncodeLength = 2 * BlockHandle::kMaxEncodedLength + 8 };
 
         Footer() = default;
@@ -71,7 +73,7 @@ namespace leveldb {
 
     }; 
 
-    // Footer中的魔法数
+    // Footer中的魔法数，起到校验的作用
     // kTableMagicNumber was picked by running
     //    echo http://code.google.com/p/leveldb/ | sha1sum
     // and taking the leading 64 bits.

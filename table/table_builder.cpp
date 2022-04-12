@@ -15,6 +15,7 @@
 #include "table/format.h"
 #include "util/coding.h"
 #include "util/crc32c.h"
+#include "port/port_stdcxx.h"
 
 namespace leveldb {
     struct TableBuilder::Rep {
@@ -57,8 +58,8 @@ namespace leveldb {
         // SSTable中的 filter block
         FilterBlockBuilder* filter_block;
 
-        // 直到看到下一个data block的第一个key时才生成当前block的index
-        // 只有当data block为空时，pending_index_entry才为true
+        // 直到看到下一个data block的第一个key时才生成当前block的index，
+        // 只有当data block为空时，pending_index_entry才为true。
         bool pending_index_entry;
         // 待加入到index block 的handle，也即当前data block的handle
         BlockHandle pending_handle;
@@ -91,7 +92,7 @@ namespace leveldb {
     }
 
     // 向SSTable中写数据，实际写顺序是先向data block中写数据，
-    // data block写满后再刷新到SSTabel
+    // data block写满后再调用Flush()刷新到SSTable。
     void TableBuilder::Add(const Slice &key, const Slice &value) {
         Rep* r = rep_;
 
@@ -101,7 +102,8 @@ namespace leveldb {
         if(r->num_entries > 0) {
             assert(r->options.comparator->Compare(key, Slice(r->last_key)) > 0);
         }
-        // 表示遇到新的data block ，此key为data block的第一个key
+        // 表示遇到新的data block ，此key为data block的第一个key，此时需要将上
+        // 一个data block的索引信息写入index block。
         if(r->pending_index_entry) {
             // 确定确实是新的data block，也即其为空
             assert(r->data_block.empty());
@@ -110,7 +112,8 @@ namespace leveldb {
             std::string handle_encoding;
             // 将data block的handle压缩存储到handle_encoding
             r->pending_handle.EncodeTo(&handle_encoding);
-            // 将data block的handle信息存到index block
+            // 将上一个data block的handle信息存到index block，该信息也是一个KV映射，
+            // 其中key是当前last_key，value是将该data block的handle序列化后的字符串。
             r->index_block.Add(r->last_key, Slice(handle_encoding));
             r->pending_index_entry = false;
         }
@@ -172,10 +175,12 @@ namespace leveldb {
         Slice block_contents;
         CompressionType type = r->options.compression;
         switch (type) {
+            // 不需要压缩
             case kNoCompression:
                 block_contents = raw;
                 break;
 
+            // 采用snappy压缩
             case kSnappyCompression:
                 std::string* compressed = &r->compressed_output;
                 if(port::Snappy_Compress(raw.data(), raw.size(), compressed) &&
@@ -194,12 +199,13 @@ namespace leveldb {
         block->Reset();
     }
 
-    // 将处理完成的block数据写入SSTable
+    // 将处理完成的block数据写入SSTable，并将block的信息（位置偏移和大小）保存在*handle中。
+    // 可以看到在写入一个data block时，同时还写入了1字节的压缩类型和4字节的crc检验和。
     void TableBuilder::WriteRawBlock(const Slice &block_contents, CompressionType type, BlockHandle *handle) {
         Rep* r = rep_;
-        // 设置block的位置偏移
+        // 保存此block的位置偏移
         handle->set_offset(r->offset);
-        // 设置block的实际大小
+        // 保存此block的实际大小
         handle->set_size(block_contents.size());
         // 写入file
         r->status = r->file->Append(block_contents);
@@ -211,7 +217,7 @@ namespace leveldb {
             // 写入type
             trailer[0] = type;
             // 计算crc32
-            uint32_t  crc = crc32c::Value(block_contents.data(), block_contents.size());
+            uint32_t crc = crc32c::Value(block_contents.data(), block_contents.size());
             // 对crc32编码
             EncodeFixed32(trailer + 1, crc32c::Mask(crc));
             // 写入file

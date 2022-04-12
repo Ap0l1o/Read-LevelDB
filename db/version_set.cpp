@@ -309,13 +309,17 @@ namespace leveldb {
     }
 
 
-    // 查找文件的key range覆盖指定key的文件，并对其调用func函数
+    // 查找文件的key range覆盖指定key的文件，然后对找到
+    // 的文件调用func函数来进一步查找。
     void Version::ForEachOverlapping(Slice user_key, Slice internal_key, void *arg,
                                      bool (*func)(void *, int, FileMetaData *)) {
 
         const Comparator* ucmp = vset_->icmp_.user_comparator();
 
-        // 在level0按newest到oldest的顺序查找，因为level0无序，所以只能顺序遍历
+        // 在当前version中查找，version的vector<FileMetaData*> files_中保存了DB中所有SSTable
+        // 的元数据信息，这里需要用到的主要是文件的largest key 和 smallest key。
+        //
+        // 1. 在level0按newest到oldest的顺序查找，因为level0无序，所以只能顺序遍历
         std::vector<FileMetaData*> tmp;
         tmp.reserve(files_[0].size());
         for(uint32_t i = 0; i < files_[0].size(); i++) {
@@ -328,7 +332,7 @@ namespace leveldb {
         }
 
         if(!tmp.empty()) {
-            // 对tmp按照文件编号进行排序
+            // 对查找到的按照文件编号进行排序
             std::sort(tmp.begin(), tmp.end(), NewestFirst);
             for(uint32_t i = 0; i < tmp.size(); i++) {
                 // 对覆盖此key的file调用func函数，若函数返回false则表示不用继续查找了，
@@ -339,7 +343,7 @@ namespace leveldb {
             }
         }
 
-        // 查找其他level
+        // 2. 按照level的递增顺序，在深层level中继续查找
         for(int level = 1; level < config::kNumLevels; level++) {
             // 获取当前层的文件数量
             size_t num_files = files_[level].size();
@@ -448,7 +452,8 @@ namespace leveldb {
         state.saver.user_key = k.user_key();
         state.saver.value = value;
 
-        // 找key range覆盖指定key的文件，也即找到可能包含此key的文件，然后调用Match方法进一步查找
+        // 1. 找key range覆盖指定key的文件，也即找到可能包含此key的文件;
+        // 2. 找到相关文件后调用Match方法在该文件中进一步查找。
         ForEachOverlapping(state.saver.user_key, state.ikey, &state, &State::Match);
 
         return state.found ? state.s : Status::NotFound(Slice());
@@ -658,6 +663,7 @@ namespace leveldb {
         };
 
         VersionSet* vset_;
+        // Builder的基准Version
         Version* base_;
         // 记录每一层新增和删除的文件
         LevelState levels_[config::kNumLevels];
@@ -745,6 +751,7 @@ namespace leveldb {
                 const FileSet* added_files = levels_[level].added_files; // 新增的文件
                 // 调整level的大小
                 v->files_[level].reserve(base_files.size() + added_files->size());
+                // 根据key顺序将文件合并
                 for(const auto& added_file : *added_files) {
                     for(std::vector<FileMetaData*>::const_iterator bpos =
                             std::upper_bound(base_iter, base_end, added_file, cmp);
@@ -863,7 +870,7 @@ namespace leveldb {
         edit->SetNextFile(next_file_number_);
         edit->SetLastSequence(last_sequence_);
 
-        // 创建一个新的Version，并将VersionEdit中的改动应用到Version中
+        // 1. 基于当前Version创建一个新的Version，并将VersionEdit中的改动应用到Version中
         Version* v = new Version(this);
         {
             Builder builder(this, current_);
@@ -875,8 +882,9 @@ namespace leveldb {
 
         std::string new_manifest_file;
         Status s;
-        // 如果MANIFEST文件指针不存在，便创建并初始化一个新的MANIFEST文件。
-        // 这只会发生在第一次打开一个数据库时，MANIFEST文件保存了current version的快照。
+        // 2. 如果MANIFEST文件指针不存在，便创建并初始化一个新的MANIFEST文件。
+        // 这只会发生在第一次打开一个数据库时，MANIFEST文件在第一次创建时会写入
+        // 一个current version作为快照。
         if(descriptor_log_ == nullptr) {
             assert(descriptor_file_ == nullptr);
             // 创建MANIFEST文件
@@ -884,18 +892,22 @@ namespace leveldb {
             edit->SetNextFile(next_file_number_);
             s = env_->NewWritableFile(new_manifest_file, &descriptor_file_); // 创建文件
             if(s.ok()) {
+                // 创建manifest文件的Writer，可以看出manifest是用写日志的方式写入
+                // 数据。
                 descriptor_log_ = new log::Writer(descriptor_file_);
-                // 将当前的快照写到descriptor_log_
+                // 将当前Version作为快照写入manifest文件，这只发生在第一次创建
+                // 并打开manifest文件时。
                 s = WriteSnapshot(descriptor_log_);
             }
         }
 
-        // 在执行昂贵的 MANIFEST log write 时先 Unlock
+        // 3. 将VersionEdit写入manifest文件，此外，在执行昂贵的 MANIFEST log write 时先 Unlock
         {
             mu->Unlock();
 
             // 向MANIFEST log中写入新的record
             if(s.ok()) {
+                // 将VersionEdit序列化为一个record，并写入manifest文件
                 std::string record;
                 edit->EncodeTo(&record);
                 s = descriptor_log_->AddRecord(record);
@@ -915,7 +927,7 @@ namespace leveldb {
             mu->Lock();
         }
 
-        // 将新的Version添加到VersionSet
+        // 4. 将新的Version添加到VersionSet
         if(s.ok()) {
             AppendVersion(v);
             log_number_ = edit->log_number_;
@@ -936,7 +948,7 @@ namespace leveldb {
 
     // 根据MANIFEST文件恢复Version。
     // CURRENT文件中存了当前的MANIFEST文件名，MANIFEST文件中存的是以log形式
-    // 写入的VersionEdit。
+    // 写入的VersionEdit（此外还包括某个版本的Version，也即一个快照）。
     Status VersionSet::Recover(bool* save_manifest) {
 
         struct LogReporter : public log::Reader::Reporter {

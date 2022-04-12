@@ -1183,11 +1183,13 @@ namespace leveldb {
             mutex_.Unlock();
             LookupKey lkey(key, snapshot);
             if(mem->Get(lkey, value, &s)) {
+                // 1. 查询memtable;
                 // 查询完毕，在memtable中查到数据
             } else if(imm->Get(lkey, value, &s)) {
+                // 2. 查询immutable memtable;
                 // 查询完毕，在immtable memtable中查到数据
             } else {
-                // 最后在sstable中查找
+                // 3. 在当前的Version中查询SSTables;
                 s = current->Get(options, lkey, value, &stats);
                 have_stat_update = true;
             }
@@ -1531,6 +1533,7 @@ namespace leveldb {
 
     DB::~DB() = default;
 
+    // 打开一个数据库，将数据库指针保存在dbptr
     Status DB::Open(const Options &options, const std::string &dbname, DB **dbptr) {
         *dbptr = nullptr;
 

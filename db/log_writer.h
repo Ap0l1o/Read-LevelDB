@@ -33,8 +33,10 @@ namespace leveldb {
             Status AddRecord(const Slice& slice);
 
             private:
+            //
             Status EmitPhysicalRecord(RecordType type, const char* ptr, size_t length);
 
+            // 顺序写的日志文件对象
             WritableFile* dest_;
             // block 中当前的偏移位置
             int block_offset_;  

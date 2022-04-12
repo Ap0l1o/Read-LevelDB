@@ -20,9 +20,10 @@ namespace leveldb {
     static std::string MakeFileName(const std::string& dbname, uint64_t number,
                                     const char* suffix) {
         char buf[100];
+        // 文件名由6位的number和后缀suffix组成
         std::snprintf(buf, sizeof(buf), "/%06llu.%s",
                       static_cast<unsigned long long>(number), suffix);
-
+        // 组合文件路径和文件名
         return dbname + buf;
     }
 
@@ -41,9 +42,11 @@ namespace leveldb {
         return MakeFileName(dbname, number, "sst");
     }
 
+    // 生成manifest文件名
     std::string DescriptorFileName(const std::string& dbname, uint64_t number) {
         assert(number > 0);
         char buf[100];
+        // 可以看到manifest文件名也包含number，且与其他使用number的文件公用一个编号系统
         std::snprintf(buf, sizeof(buf), "/MANIFEST-%06llu",
                       static_cast<unsigned long long>(number));
         return dbname + buf;
@@ -132,7 +135,7 @@ namespace leveldb {
         // 去掉manifest文件名的前缀
         contents.remove_prefix(dbname.size() + 1);
         // 创建一个临时文件
-        std::string tmp = TempFilename(dbname, descriptor_number);
+        std::string tmp = TempFileName(dbname, descriptor_number);
         // 将新的manifest文件名写入临时文件
         Status s = WriteStringToFileSync(env, contents.ToString() + "\n", tmp);
         if(s.ok()) {

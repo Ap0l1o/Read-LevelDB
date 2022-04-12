@@ -11,7 +11,10 @@
 
 
 /**
- * @brief 1. Varint32和Varint64都是变长编码，可以按照数据的大小进行编码，分别最高可以编码32位(4B)和64位(8B)的数据；
+ * @brief leveldb的编码均是采用的小端序，数据的低位字节放在低地址处，数据的高位字节放在高地址处，更符合计算机读取数据的方式。
+ *        编码共分为固定长度编码和变长编码，且都分为32位和64位版本。
+ *        1. Varint32和Varint64都是变长编码，可以按照数据的大小进行编码，分别最高可以编码32位(4B)和64位(8B)的数据，
+ *           在一个字节中，低7位表示有效数据，最高的1位用来表示后面的字节中是否还有属于当前源数据的有效数据；
  *        2. Fixed32和Fixed64都是固定长度编码，分别用32位和64位进行编码；
  * 
  */
@@ -45,6 +48,7 @@ namespace leveldb {
     const char* GetVarint32PtrFallback(const char* p, const char* limit, uint32_t* value); // 多个字节编码的数据用该函数解码
 
     // 因为该函数比较简单，所以被设置为内联函数
+    // 解码Varint32,解码结果存到uint32_t* value
     inline const char* GetVarint32Ptr(const char* p, const char* limit, uint32_t* value) {
         if(p < limit) {
             uint32_t result = *(reinterpret_cast<const uint8_t*>(p));

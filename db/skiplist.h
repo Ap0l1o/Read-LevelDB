@@ -239,19 +239,20 @@ namespace leveldb {
     }
 
     template <typename Key, class Comparator>
-    bool SkipList<Key, Comparator>::KeyIsAfterNode(const Key& key, Node* n) const {
+    bool SkipList<Key, Comparator>::KeyIsAfterNode(const Key& key, SkipList::Node* n) const {
         // 判断key是否比节点n的key大
         return (n != nullptr) && (compare_(n->key, key) < 0);
     }
 
+    // 找到key在每一层的前驱节点并将其存在prev中，最后返回在第一层的前驱节点
     template <typename Key, class Comparator> 
     typename SkipList<Key, Comparator>::Node*
-    SkipList<Key, Comparator>::FindGreaterOrEqual(const Key& key, Node** prev) const {
+    SkipList<Key, Comparator>::FindGreaterOrEqual(const Key& key, SkipList::Node** prev) const {
         Node* x = head_;
         int level = GetMaxHeight() - 1;
         while(true) {
             // 从跳表的最上层开始查找
-            Node* next = head_->next_[level];
+            Node* next = x->next_[level];
             // 若key大于next的key，则需要继续在当前层查找
             if(KeyIsAfterNode(key, next)) {
                 x = next;
@@ -264,8 +265,7 @@ namespace leveldb {
                 }
 
                 if(level == 0) {
-                    // 如果已经找到第一层了，则没没法继续往下找了，
-                    // 该节点便是我们要找的节点，可以直接将其返回
+                    // 如果已经找到第一层了，则返回第一层的前驱节点
                     return next;
                 } else {
                     // 当前不是第一层，需要继续去下层查找
@@ -381,6 +381,7 @@ namespace leveldb {
             return false;
         }
     }
+
 
 } // end namespace leveldb;
 

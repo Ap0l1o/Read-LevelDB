@@ -16,7 +16,8 @@ namespace leveldb {
 
     class MemTable {
         public:
-        // MemTable是通过引用计数的，初始化时引用计数为0，每次调用必须调用Ref()至少一次
+        // MemTable会通过引用计数的，初始化时引用计数为0，每次被调用必须先调用Ref()来增加一次引用，
+        // 引用计数不为0则不能被删除。
         explicit MemTable(const InternalKeyComparator& comparator);
 
         MemTable(const MemTable&) = delete;

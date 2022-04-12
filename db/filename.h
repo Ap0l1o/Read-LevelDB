@@ -13,6 +13,8 @@
 #include "port/port.h"
 
 namespace leveldb {
+    // leveldb中的文件编号由VersionSet统一维护，在创建一个文件时VersionSet
+    // 先生成一个最新的文件编号，然后将文件编号插入文件名中。
 
     class Env;
 

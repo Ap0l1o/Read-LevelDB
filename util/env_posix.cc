@@ -728,7 +728,7 @@ namespace leveldb {
 
             // 将work item data存在一个Schedule()调用中
             //
-            // 实例在线程调用Schedule()时构造，并在后台线程中使用
+            // 工作任务实例在线程调用Schedule()时构造，并在后台线程中使用
             struct BackgroundWorkItem {
                 explicit BackgroundWorkItem(void (*function)(void* arg), void* arg)
                     : function(function), arg(arg) {}
@@ -741,6 +741,7 @@ namespace leveldb {
             port::CondVar background_work_cv_ GUARDED_BY(background_work_mutex_);
             bool started_background_thread_ GUARDED_BY(background_work_mutex_);
 
+            // 工作队列，队列中放的都是需要被线程执行的任务
             std::queue<BackgroundWorkItem> background_work_queue_ GUARDED_BY(background_work_mutex_);
 
             PosixLockTable locks_;
@@ -784,12 +785,14 @@ namespace leveldb {
           mmap_limiter_(MaxMmaps()),
           fd_limiter_(MaxOpenFiles()) {}
 
+    // 线程调度函数，启动后台主线程，向工作队列中插入任务，负责任务的调度
     void PosixEnv::Schedule(void (*background_work_function)(void *), void *background_work_arg) {
         background_work_mutex_.Lock();
-        // 如果没有启动后台线程的话，则启动后台线程
+        // 如果没有启动后台线程的话，则启动后台主线程
         if(!started_background_thread_) {
             started_background_thread_ = true;
             std::thread background_thread(PosixEnv::BackgroundThreadEntryPoint, this);
+            // detach模式，由内核回收线程资源，线程单独执行，执行完毕释放资源
             background_thread.detach();
         }
         // 如果队列为空，则后台线程可能会等待
@@ -797,10 +800,12 @@ namespace leveldb {
             background_work_cv_.Signal();
         }
 
+        // 向工作队列中插入一个任务
         background_work_queue_.emplace(background_work_function, background_work_arg);
         background_work_mutex_.Unlock();
     }
 
+    // 后台主线程，从工作队列中取出任务并执行任务，负责任务的执行
     void PosixEnv::BackgroundThreadMain() {
         while(true) {
             background_work_mutex_.Lock();
@@ -810,12 +815,13 @@ namespace leveldb {
             }
 
             assert(!background_work_queue_.empty());
-            // 获取work函数
+            // 获取work函数，也即取出工作任务
             auto background_work_function = background_work_queue_.front().function;
-            // 获取work参数
+            // 获取work参数，也即取出执行工作任务所需要的一些参数
             void* background_work_arg = background_work_queue_.front().arg;
             background_work_queue_.pop();
             background_work_mutex_.Unlock();
+            // 执行任务
             background_work_function(background_work_arg);
         }
     }

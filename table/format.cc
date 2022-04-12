@@ -1,10 +1,11 @@
 #include "table/format.h"
-//#include "leveldb/env.h"
-#include "leveldb/status.h"
+
+#include "leveldb/env.h"
 #include "port/port.h"
 #include "table/block.h"
 #include "util/coding.h"
 #include "util/crc32c.h"
+#include "port/port_stdcxx.h"
 
 namespace leveldb {
 
@@ -127,9 +128,9 @@ namespace leveldb {
                 }
                 break;
             
-            case kSnappyCompression:
+            case kSnappyCompression: {
                 size_t ulength = 0;
-                if(!port::Sanppy_GetUncompressedLength(data, n, &ulength)) {
+                if(!port::Snappy_GetUncompressedLength(data, n, &ulength)) {
                     delete[] buf;
                     return Status::Corruption("corrupted compressed block contens");
                 }
@@ -145,7 +146,7 @@ namespace leveldb {
                 result->cacheable = true;
                 result->cacheable = true;
                 break;
-
+            }
             default:
                 delete[] buf;
                 return Status::Corruption("bad block type");

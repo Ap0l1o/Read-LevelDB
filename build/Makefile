@@ -921,6 +921,30 @@ util/logging.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/logging.cpp.s
 .PHONY : util/logging.cpp.s
 
+util/options.o: util/options.cpp.o
+.PHONY : util/options.o
+
+# target to build an object file
+util/options.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/options.cpp.o
+.PHONY : util/options.cpp.o
+
+util/options.i: util/options.cpp.i
+.PHONY : util/options.i
+
+# target to preprocess a source file
+util/options.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/options.cpp.i
+.PHONY : util/options.cpp.i
+
+util/options.s: util/options.cpp.s
+.PHONY : util/options.s
+
+# target to generate assembly for a file
+util/options.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/options.cpp.s
+.PHONY : util/options.cpp.s
+
 util/status.o: util/status.cc.o
 .PHONY : util/status.o
 
@@ -1053,6 +1077,9 @@ help:
 	@echo "... util/logging.o"
 	@echo "... util/logging.i"
 	@echo "... util/logging.s"
+	@echo "... util/options.o"
+	@echo "... util/options.i"
+	@echo "... util/options.s"
 	@echo "... util/status.o"
 	@echo "... util/status.i"
 	@echo "... util/status.s"

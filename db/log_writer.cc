@@ -26,6 +26,7 @@ namespace leveldb {
 
         Writer::~Writer() = default;
 
+        // 将一个record写入磁盘log文件
         Status Writer::AddRecord(const Slice& slice) {
             // 获取数据指针和长度
             const char* ptr = slice.data();
@@ -35,7 +36,7 @@ namespace leveldb {
             bool begin = true;
             do {
                 
-                // 获取当前block的插入位置
+                // 获取当前block的可用空间
                 const int leftover = kBlockSize - block_offset_;
                 assert(leftover >= 0);
                 // 若当前block已经连record header都无法存入了
@@ -45,7 +46,7 @@ namespace leveldb {
                         // 静态断言
                         // 第一个参数为判断语句，第二个参数为错误提示
                         static_assert(kHeaderSize == 7, "");
-                        // 为当前block补位
+                        // 为block的剩余空间填充数据
                         dest_->Append(Slice("\x00\x00\x00\x00\x00\x00", leftover));
                     }
                     // 重置偏移
@@ -53,11 +54,12 @@ namespace leveldb {
                 }
 
                 assert(kBlockSize - block_offset_ - kHeaderSize >= 0);
-                // 获取block的可用空间
+                // 获取block可实际用于写数据的空间
                 const size_t avail = kBlockSize - block_offset_ - kHeaderSize;
                 // 计算分段长度，空间足够不用分段的话，分段长度就是数据长度，否则分段长度为当前可用长度
                 const size_t fragment_length = (left < avail) ? left : avail;
 
+                // record和block的关系
                 RecordType type;
                 // left == fragment表示没有分段，已经结束
                 const bool end = (left == fragment_length);
@@ -85,6 +87,13 @@ namespace leveldb {
             return s;
         }
 
+        /**
+         * 实际写数据的函数，将数据写到log文件；
+         * @param t record 类型
+         * @param ptr 数据指针
+         * @param length 数据长度
+         * @return 写入状态
+         */
         Status Writer::EmitPhysicalRecord(RecordType t, const char* ptr, size_t length) {
             // 因为header中的length只分配了两个字节，
             // 所以不能超过两个字节能表示的大小
@@ -105,7 +114,7 @@ namespace leveldb {
             EncodeFixed32(buf, crc);
 
             // 写入header
-            Status s = dest_->Append(Slice(buf, kHeaderSize()));
+            Status s = dest_->Append(Slice(buf, kHeaderSize));
             // 成功写入header后，继续写入数据
             if(s.ok()) {
                 s = dest_->Append(Slice(ptr, length));
