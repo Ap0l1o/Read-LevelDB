@@ -287,6 +287,7 @@ namespace leveldb {
 
     } // end namespace
 
+    // 将查找结果保存在v中
     static void SaveValue(void* arg, const Slice& ikey, const Slice& v) {
         Saver* s = reinterpret_cast<Saver*>(arg);
         ParsedInternalKey parsed_key;
@@ -420,7 +421,7 @@ namespace leveldb {
 
                 switch (state->saver.state) {
                     case kNotFound:
-                        // 继续在当前文件查找
+                        // 继续去其他文件查找
                         return true;
                     case kFound:
                         state->found = true;
@@ -463,8 +464,8 @@ namespace leveldb {
     bool Version::UpdateStats(const GetStats &stats) {
         FileMetaData* f = stats.seek_file;
         if(f != nullptr) {
-            // 当一个文件的无效查询次数过多时，需要将其纳入compaction；
-            // 将其允许seek的次数减1，减到0时此文件便需要进行compaction；
+            // 当一个文件的无效查询次数过多时，需要将其纳入seek compaction的备选文件；
+            // 将其允许seek的次数减1，减到0时此文件便需要进行seek compaction；
             f->allowed_seeks--;
             if(f->allowed_seeks <= 0 && file_to_compact_ == nullptr) {
                 file_to_compact_ = f;
@@ -475,7 +476,7 @@ namespace leveldb {
         return false;
     }
 
-    // 采样探测：根据internal key进行采样，计算文件的无效查询次数，
+    // 采样探测：根据internal key进行采样，计算文件潜在的无效查询次数，
     // 检查是否有文件需要被compact。
     bool Version::RecordReadSample(Slice internal_key) {
         ParsedInternalKey ikey;
@@ -711,7 +712,7 @@ namespace leveldb {
                 const uint64_t number = deleted_file_set_kvp.second;
                 levels_[level].delete_files.insert(number);
             }
-            // 添加新文件
+            // 添加新文件(将VersionEdit中添加的新文件添加到指定的level，这里的新文件大部分都是compaction的结果)
             /**
              * 一个文件被seek指定次数后就会被自动compact。这里假设：
              *      1. 一次seek耗时10ms；
@@ -877,7 +878,7 @@ namespace leveldb {
             builder.Apply(edit);
             builder.SaveTo(v);
         }
-        // 为Version v计算执行Compaction的最佳level
+        // 根据当前各个level的大小，为Version v计算执行Compaction的最佳level
         Finalize(v);
 
         std::string new_manifest_file;
@@ -1131,7 +1132,7 @@ namespace leveldb {
         }
     }
 
-    // 计算获取指定Version的最迫切需要Compaction的level
+    // 根据各个level的当前大小和其容量上限，计算获取指定Version的最迫切需要Compaction的level
     void VersionSet::Finalize(Version *v) {
         // 计算下一次执行compaction的最佳level
         int best_level = -1;
@@ -1378,14 +1379,15 @@ namespace leveldb {
         int level;
 
         // 触发compaction的两种情况：
-        //  1. 一个level中的数据超过阈值；
-        //  2. 一个level中某个文件的无效查询次数过多，例如：要查询某个key，但是在查询
+        //  1. size compaction：一个level中的数据超过阈值；
+        //  2. seek compaction：一个level中某个文件的无效查询次数过多，例如：要查询某个key，但是在查询
         //     该到key之前总会额外查询某个文件，造成非必要查询。
         // 而且leveldb更偏爱由大小超限所引起的压缩、
 
         const bool size_compaction = (current_->compaction_score_ >= 1); // 大小超限引起压缩
         const bool seek_compaction = (current_->file_to_compact_ != nullptr); // 无效查询引起压缩
 
+        // size compaction的优先级更高
         if(size_compaction) {
             // 要执行compact的level
             level = current_->compaction_level_;
@@ -1431,6 +1433,7 @@ namespace leveldb {
             assert(!c->inputs_[0].empty());
         }
 
+        // 根据选择好的要执行压缩的第一个文件，匹配其他需要一块执行compaction的文件
         SetupOtherInputs(c);
 
         return c;
@@ -1509,7 +1512,7 @@ namespace leveldb {
         }
     }
 
-    // 设置Compaction对象执行compact操作的输入文件
+    // 设置Compaction对象执行compact操作所需要的其他输入文件
     void VersionSet::SetupOtherInputs(Compaction *c) {
         const int level = c->level();
         InternalKey smallest, largest;
@@ -1528,7 +1531,7 @@ namespace leveldb {
         GetRange2(c->inputs_[0], c->inputs_[1], &all_start, &all_limit);
 
         if(!c->inputs_[1].empty()) {
-            // 根据all_start和all_limit，在level中查找存在重叠的文件，然后在查找boundary file，
+            // 根据all_start和all_limit，在level中查找存在重叠的文件，然后再查找boundary file，
             // 完成对c->inputs[0]的扩充，得到expanded0.
             std::vector<FileMetaData*> expanded0;
             current_->GetOverlappingInputs(level, &all_start, &all_limit, &expanded0);
@@ -1624,6 +1627,7 @@ namespace leveldb {
         }
     }
 
+    // 是否可以仅仅将SSTable移动到下层就可以完成compaction操作
     bool Compaction::IsTrivialMove() const {
         const VersionSet* vset = input_version_->vset_;
         // 如果可以仅仅通过移动上层level的file到下层level便可以完成compaction，且
@@ -1633,6 +1637,7 @@ namespace leveldb {
                 TotalFileSize(grandparents_) <= MaxGrandParentOverlapBytes(vset->options_) );
     }
 
+    // 在VersionEdit中记录完成compaction操作后需要删除的文件，也即compaction中的输入文件
     void Compaction::AddInputDeletions(VersionEdit *edit) {
         for(int which = 0; which < 2; which++) {
             for(size_t i = 0; i < inputs_[which].size(); i++) {

@@ -28,8 +28,8 @@ namespace leveldb {
         // 从Cache中删除但仍被客户端引用的item不在这两个链表中。
         // 这两个链表为：
         // - in-use: 包含客户端当前引用的item，没有特定的顺序（此列表用于不变检查，如果我们删除检查
-        //            ，则该列表中的元素可能会保留为断开连接的单例链表）。
-        // - LRU: 包含客户端当前未引用的item，按LRU排序。
+        //            ，则该列表中的元素可能会保留为断开连接的单例链表）。(热数据)
+        // - LRU: 包含客户端当前未引用的item，按LRU排序。（冷数据）
         //
         // 当Ref()和Unref()方法检测到一个元素获得或丢失掉其唯一的外部引用时，元素会在这两个链表之间移动，。
 
@@ -230,6 +230,8 @@ namespace leveldb {
             }
         }
 
+        // 缓存节点引用计数加1。
+        // 若节点引用计数加1后大于2，则将Cache节点从lru_链表移动到in_use_链表
         void LRUCache::Ref(LRUHandle *e) {
             // 如果在lru_链表中，则将其移到in_use_链表中
             if(e->refs == 1 && e->in_cache) {
@@ -239,14 +241,21 @@ namespace leveldb {
             e->refs++;
         }
 
+        // 缓存节点引用计数减1。
+        // 若节点引用计数变为0则删除并释放该节点，若节点引用计数变为1则将该缓存节点
+        // 从in_use_链表移动到lru_链表。
         void LRUCache::Unref(LRUHandle *e) {
             assert(e->refs > 0);
+            // 引用数量减1
             e->refs--;
+            // 引用计数为0时则删除此节点
             if(e->refs == 0) {
                 assert(!e->in_cache);
                 (*e->deleter)(e->key(), e->value);
                 free(e);
             } else if(e->in_cache && e->refs == 1) {
+                // 引用计数为1时则将该节点从in_use_链表移动到lru_链表
+                // 也即从热数据链表移动到冷数据链表
                 LRU_Remove(e);
                 LRU_Append(&lru_, e);
             }
@@ -265,8 +274,10 @@ namespace leveldb {
             e->next->prev = e;
         }
 
+        // 查找缓存项
         Cache::Handle* LRUCache::Lookup(const Slice &key, uint32_t hash) {
             MutexLock l(&mutex_);
+            // 通过hashtable快速查询
             LRUHandle* e = table_.Lookup(key, hash);
             if(e != nullptr) {
                 Ref(e);
@@ -279,6 +290,7 @@ namespace leveldb {
             Unref(reinterpret_cast<LRUHandle*>(handle));
         }
 
+        // 向缓存中添加一个缓存项，刚添加的缓存项存在in_use_链表中
         Cache::Handle* LRUCache::Insert(const Slice &key, uint32_t hash, void *value, size_t charge,
                                         void (*deleter)(const Slice &, void *)) {
             MutexLock l(&mutex_);
@@ -304,7 +316,10 @@ namespace leveldb {
                 // 不需要缓存，capacity_==0表示不支持并关掉了缓存
                 e->next = nullptr;
             }
+
+            // 缓存可用空间不够，需要删除旧的缓存节点，lru_中存放的是旧的缓存项
             while(usage_ > capacity_ && lru_.next != &lru_) {
+                // 删除释放旧的缓存节点，直到有足够的可用空间，或者无旧的缓存项可删除
                 LRUHandle* old = lru_.next;
                 assert(old->refs == 1);
                 bool erased = FinishErase(table_.Remove(old->key(), old->hash));
@@ -315,6 +330,7 @@ namespace leveldb {
             return reinterpret_cast<Cache::Handle*>(e);
         }
 
+        // 删除并释放一个缓存项
         bool LRUCache::FinishErase(LRUHandle *e) {
             // 若e == nullptr，则已经吧*e移出缓存了
             if(e != nullptr) {
@@ -348,6 +364,7 @@ namespace leveldb {
         // 1 << 4  = 二进制(10000) = 十进制(16)
         // SharedLRUCache封装了16个LRUCache缓存分片，每次对缓存的
         // 读取、插入和删除操作都是调用某个LRUCache缓存分片中的相应方法完成。
+        // 采用多个缓存分片是为了减少多线程的竞争延迟；
         static const int kNumShards = 1 << kNumShardBits;
 
         class ShardedLRUCache : public Cache {
@@ -358,6 +375,7 @@ namespace leveldb {
             port::Mutex id_mutex_;
             uint64_t last_id_;
 
+            // 用于计算hash值
             static inline uint32_t HashSlice(const Slice& s) {
                 return Hash(s.data(), s.size(), 0);
             }
@@ -369,6 +387,7 @@ namespace leveldb {
             }
 
         public:
+            // 构造函数，为每个缓存分片设置容量
             explicit ShardedLRUCache(size_t capacity) : last_id_(0) {
                 // 计算每个缓存分片的容量
                 const size_t per_shared = (capacity + (kNumShardBits - 1)) / kNumShards;

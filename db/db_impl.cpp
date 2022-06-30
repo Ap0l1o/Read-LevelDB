@@ -77,6 +77,7 @@ namespace leveldb {
         SequenceNumber smallest_snapshot;
         std::vector<Output> outputs;
         WritableFile* outfile;
+        // 用于构建新的SSTable
         TableBuilder* builder;
 
         uint64_t total_bytes;
@@ -677,12 +678,14 @@ namespace leveldb {
         }
     }
 
+    // 用于检查是否需要执行Compaction操作
     void DBImpl::MaybeScheduleCompaction() {
         // 此方法是一个递归调用
 
         mutex_.AssertHeld();
         if(background_compaction_scheduled_) {
             // already schedule
+            // 工作队列中已经有一个compaction操作在准备执行或已经在执行
         } else if(!bg_error_.ok()) {
             // DB is being deleted; no more background compactions;
         } else if(!bg_error_.ok()) {
@@ -690,12 +693,17 @@ namespace leveldb {
         } else if(imm_ == nullptr && manual_compaction_ == nullptr &&
                   !versions_->NeedsCompaction()) {
             // No work to be done 这是递归调用的结束点，结束条件为：
-            // 1. 当前immutable memtable 为 null;
-            // 2. 非手动compaction;
-            // 3. VersionSet判定为不需要执行compaction;
+            // 1. 当前immutable memtable 为 null，没有senior compaction;
+            // 2. 没有手动compaction;
+            // 3. VersionSet判定为不需要执行compaction，没有size compaction和seek compaction;
+            // 也即没有需要执行的compaction操作
         } else {
+            // 工作队列中的compaction操作以及执行完毕，可以放入一个
+            // 新的compaction。
+
+            // 用于标记工作队列中是否已经有一个compaction操作
             background_compaction_scheduled_ = true;
-            // 将BGWork放入线程池，由子线程来完成，这会进入一个递归调用
+            // 将BGWork放入线程池的工作队列，由子线程来完成，这会进入一个递归调用
             env_->Schedule(&DBImpl::BGWork, this);
             // 这是递归调用的入口，调用链如下：
             // BGWork()->BackgroundCall()->MaybeScheduleCompaction()
@@ -714,16 +722,26 @@ namespace leveldb {
         } else if(!bg_error_.ok()) {
             // No more background work after a background error.
         } else {
+            // 执行后台compaction操作
             BackgroundCompaction();
         }
-
+        // 标记当前compaction操作已经执行完成
         background_compaction_scheduled_ = false;
+        // 执行完成compaction后重新进入递归入口，检查是否还有compaction操作需要执行
         MaybeScheduleCompaction();
         background_work_finished_signal_.SignalAll();
     }
 
+    // 执行compaction操作
     void DBImpl::BackgroundCompaction() {
         mutex_.AssertHeld();
+        /**
+         * @brief compaction的优先级：
+         *  1. 先检查是否需要执行minor compaction，如果需要则执行；
+         *  2. 检查是否有手动指定的compaction操作，如果有则执行；
+         *  3. 检查是否有size compaction和seek compaction，size compaction的优先级更高；
+         */
+
 
         // minor compaction的触发条件
         if(imm_ != nullptr) {
@@ -754,6 +772,10 @@ namespace leveldb {
         if(c == nullptr) {
             // nothing to do
         } else if (!is_manual && c->IsTrivialMove()) {
+            /**
+             * @brief 查看是否能够仅通过移动SSTable文件而不需要重写就能完成Compaction操作。
+             * 
+             */
             // 将file移动到下个level
             assert(c->num_input_files(0) == 1);
             FileMetaData* f = c->input(0, 0);
@@ -1196,7 +1218,7 @@ namespace leveldb {
             mutex_.Lock();
         }
 
-        // 更新状态，本次查询可能会带来无效查询，而无效查询可能会触发compaction
+        // 更新状态，本次查询可能会带来无效查询，而无效查询可能会触发seek compaction
         if(have_stat_update && current->UpdateStats(stats)) {
             MaybeScheduleCompaction();
         }
@@ -1267,7 +1289,7 @@ namespace leveldb {
         if(w.done) {
             return w.status;
         }
-
+        // LevelDB执行写入前先腾出空间
         Status status = MakeRoomForWrite(updates == nullptr);
         uint64_t last_sequence = versions_->LastSequence();
         Writer* last_writer = &w;
@@ -1376,7 +1398,7 @@ namespace leveldb {
         return result;
     }
 
-    // 为Write腾出空间
+    // 为Write腾出空间，
     Status DBImpl::MakeRoomForWrite(bool force) {
         mutex_.AssertHeld();
         assert(!writers_.empty());
@@ -1421,12 +1443,14 @@ namespace leveldb {
                 logfile_ = lfile;
                 logfile_number_ = new_log_number;
                 log_ = new log::Writer(lfile);
+                // 前面已经判断过imm_是否不为nullptr，能走到这里说明imm_为nullptr，可将memtable转为immutable memtable
                 // 将旧的memtable作为immutable memtable
                 imm_ = mem_;
                 has_imm_.store(true, std::memory_order_release);
                 mem_ = new MemTable(internal_comparator_);
                 mem_->Ref();
                 force = false;
+                // 检查是否需要执行compaction操作
                 MaybeScheduleCompaction();
             }
         }
@@ -1569,7 +1593,7 @@ namespace leveldb {
         if(s.ok()) {
             // 删除旧文件
             impl->RemoveObsoleteFiles();
-            // 启动compaction线程
+            // 检查是否需要执行compaction
             impl->MaybeScheduleCompaction();
         }
         impl->mutex_.Unlock();

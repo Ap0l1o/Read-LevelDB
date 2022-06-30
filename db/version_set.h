@@ -194,11 +194,13 @@ namespace leveldb {
         // 每一个level中的file
         std::vector<FileMetaData*> files_[config::kNumLevels];
 
+        /* 用于判断是否需要触发Seek Compaction */
         // 基于查询状态（也即因为无效查询次数过多所触发compact）所选择的下次要执行compact的
         // sstable文件以及其所在level
         FileMetaData* file_to_compact_;
         int file_to_compact_level_;
 
+        /* 用于判断是否需要触发Size Compaction */
         // 下一次要进行compact的level的得分，得分<=1表示不是特别迫切需要进行compaction
         double compaction_score_;
         // 下一次要进行compact的level
@@ -292,6 +294,7 @@ namespace leveldb {
         // 返回是否需要进行一次compaction
         bool NeedsCompaction() const {
             Version* v = current_;
+            // 返回是否需要触发size compaction和seek compaction
             return (v->compaction_score_ >= 1) || (v->file_to_compact_ != nullptr);
         }
 

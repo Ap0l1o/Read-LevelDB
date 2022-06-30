@@ -20,18 +20,26 @@ namespace leveldb {
             }
             const char* Name() const override { return "leveldb.BuiltinBloomFilter2"; }
 
-            // 创建一个布隆过滤器，将所得的BF存到dst
+            /**
+             * @brief Create a Filter object
+             *        创建一个布隆过滤器，将所得的BF存到dst
+             * 
+             * @param keys 创建BF的参数，也就是所有的key
+             * @param n keys中所包含的key的数量
+             * @param dst 创建完成的布隆过滤器存在*dst中
+             */
             void CreateFilter(const Slice* keys, int n, std::string* dst) const override {
                 // 计算布隆过滤器的大小，单位为bit
                 size_t bits  = n * bits_per_key_;
                 // 当n较小时，其误报率较高，因此将其填充到最小为64
                 if(bits < 64) bits = 64;
                 // 向上调整到整字节的倍数
-                size_t bytes = (bits + 7) / 8;
-                bits = bytes * 8;
+                size_t bytes = (bits + 7) / 8; // 共占多少个字节
+                bits = bytes * 8; // 共占多少bit位
 
                 // 为filter分配空间，并将其初始化为0
                 const size_t init_size = dst->size();
+                // 使用resize函数增加空间，并将新增空间的位置设置为0
                 dst->resize(init_size + bytes, 0);
                 // 将hash函数的个数k_压入最后一个字节位
                 dst->push_back(static_cast<char>(k_));
@@ -40,10 +48,15 @@ namespace leveldb {
                 for(int i=0; i<n; i++) {
                     // Use double-hashing to generate a sequence of hash values.
                     // See analysis in [Kirsch,Mitzenmacher 2006].
+                    // 通过double-hashing来生成一个哈希值的序列
+
+                    // 计算得到哈希值，哈希值是32位的uint32_t
                     uint32_t h = BloomHash(keys[i]);
                     // Rotate right 17 bits
+                    // 右旋17位：也即将低17位放前面，将高15位放到后面
                     const uint32_t delta = (h >> 17) | (h << 15);
-                    // 计算k_次哈希
+                    // 通过前面进行的那次哈希计算得到的哈希值来扩展出另外 k_-1 个哈希值，
+                    // 然后用这k_个哈希值将相应的bit位置1
                     for(size_t j=0; j<k_; j++) {
                         // 计算bit位置
                         const uint32_t bitpos = h % bits; 
@@ -83,7 +96,7 @@ namespace leveldb {
 
 
             private:
-            // 每个key占用的bit
+            // 平均每个key占用的bit，也即总容量为「 n * bits_per_key 」
             size_t bits_per_key_; 
             // 需要计算k_个hash值(也即需要k_个hash函数)
             size_t k_;

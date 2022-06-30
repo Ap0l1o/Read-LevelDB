@@ -160,6 +160,7 @@ namespace leveldb {
         SnapshotList snapshots_ GUARDED_BY(mutex_);
 
         std::set<uint64_t> pending_outputs_ GUARDED_BY(mutex_);
+        // 用于标记工作队列中是否已经有一个compaction操作
         bool background_compaction_scheduled_ GUARDED_BY(mutex_);
         ManualCompaction* manual_compaction_ GUARDED_BY(mutex_);
 
