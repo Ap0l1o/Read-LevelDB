@@ -57,10 +57,10 @@ RM = /Applications/CMake.app/Contents/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/Ap0l1o/project/LLevelDB
+CMAKE_SOURCE_DIR = /Users/Ap0l1o/my-projects/LLevelDB
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/Ap0l1o/project/LLevelDB/build
+CMAKE_BINARY_DIR = /Users/Ap0l1o/my-projects/LLevelDB/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Ap0l1o/project/LLevelDB/build/CMakeFiles /Users/Ap0l1o/project/LLevelDB/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Ap0l1o/my-projects/LLevelDB/build/CMakeFiles /Users/Ap0l1o/my-projects/LLevelDB/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Ap0l1o/project/LLevelDB/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/Ap0l1o/my-projects/LLevelDB/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -129,78 +129,6 @@ leveldb/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/build
 .PHONY : leveldb/fast
 
-db/builder.o: db/builder.cpp.o
-.PHONY : db/builder.o
-
-# target to build an object file
-db/builder.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/builder.cpp.o
-.PHONY : db/builder.cpp.o
-
-db/builder.i: db/builder.cpp.i
-.PHONY : db/builder.i
-
-# target to preprocess a source file
-db/builder.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/builder.cpp.i
-.PHONY : db/builder.cpp.i
-
-db/builder.s: db/builder.cpp.s
-.PHONY : db/builder.s
-
-# target to generate assembly for a file
-db/builder.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/builder.cpp.s
-.PHONY : db/builder.cpp.s
-
-db/db_impl.o: db/db_impl.cpp.o
-.PHONY : db/db_impl.o
-
-# target to build an object file
-db/db_impl.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/db_impl.cpp.o
-.PHONY : db/db_impl.cpp.o
-
-db/db_impl.i: db/db_impl.cpp.i
-.PHONY : db/db_impl.i
-
-# target to preprocess a source file
-db/db_impl.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/db_impl.cpp.i
-.PHONY : db/db_impl.cpp.i
-
-db/db_impl.s: db/db_impl.cpp.s
-.PHONY : db/db_impl.s
-
-# target to generate assembly for a file
-db/db_impl.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/db_impl.cpp.s
-.PHONY : db/db_impl.cpp.s
-
-db/db_iter.o: db/db_iter.cpp.o
-.PHONY : db/db_iter.o
-
-# target to build an object file
-db/db_iter.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/db_iter.cpp.o
-.PHONY : db/db_iter.cpp.o
-
-db/db_iter.i: db/db_iter.cpp.i
-.PHONY : db/db_iter.i
-
-# target to preprocess a source file
-db/db_iter.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/db_iter.cpp.i
-.PHONY : db/db_iter.cpp.i
-
-db/db_iter.s: db/db_iter.cpp.s
-.PHONY : db/db_iter.s
-
-# target to generate assembly for a file
-db/db_iter.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/db_iter.cpp.s
-.PHONY : db/db_iter.cpp.s
-
 db/dbformat.o: db/dbformat.cc.o
 .PHONY : db/dbformat.o
 
@@ -224,54 +152,6 @@ db/dbformat.s: db/dbformat.cc.s
 db/dbformat.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/dbformat.cc.s
 .PHONY : db/dbformat.cc.s
-
-db/dumpfile.o: db/dumpfile.cpp.o
-.PHONY : db/dumpfile.o
-
-# target to build an object file
-db/dumpfile.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/dumpfile.cpp.o
-.PHONY : db/dumpfile.cpp.o
-
-db/dumpfile.i: db/dumpfile.cpp.i
-.PHONY : db/dumpfile.i
-
-# target to preprocess a source file
-db/dumpfile.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/dumpfile.cpp.i
-.PHONY : db/dumpfile.cpp.i
-
-db/dumpfile.s: db/dumpfile.cpp.s
-.PHONY : db/dumpfile.s
-
-# target to generate assembly for a file
-db/dumpfile.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/dumpfile.cpp.s
-.PHONY : db/dumpfile.cpp.s
-
-db/filename.o: db/filename.cpp.o
-.PHONY : db/filename.o
-
-# target to build an object file
-db/filename.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/filename.cpp.o
-.PHONY : db/filename.cpp.o
-
-db/filename.i: db/filename.cpp.i
-.PHONY : db/filename.i
-
-# target to preprocess a source file
-db/filename.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/filename.cpp.i
-.PHONY : db/filename.cpp.i
-
-db/filename.s: db/filename.cpp.s
-.PHONY : db/filename.s
-
-# target to generate assembly for a file
-db/filename.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/filename.cpp.s
-.PHONY : db/filename.cpp.s
 
 db/log_reader.o: db/log_reader.cc.o
 .PHONY : db/log_reader.o
@@ -345,102 +225,6 @@ db/memtable.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/memtable.cc.s
 .PHONY : db/memtable.cc.s
 
-db/table_cache.o: db/table_cache.cpp.o
-.PHONY : db/table_cache.o
-
-# target to build an object file
-db/table_cache.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/table_cache.cpp.o
-.PHONY : db/table_cache.cpp.o
-
-db/table_cache.i: db/table_cache.cpp.i
-.PHONY : db/table_cache.i
-
-# target to preprocess a source file
-db/table_cache.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/table_cache.cpp.i
-.PHONY : db/table_cache.cpp.i
-
-db/table_cache.s: db/table_cache.cpp.s
-.PHONY : db/table_cache.s
-
-# target to generate assembly for a file
-db/table_cache.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/table_cache.cpp.s
-.PHONY : db/table_cache.cpp.s
-
-db/version_edit.o: db/version_edit.cpp.o
-.PHONY : db/version_edit.o
-
-# target to build an object file
-db/version_edit.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/version_edit.cpp.o
-.PHONY : db/version_edit.cpp.o
-
-db/version_edit.i: db/version_edit.cpp.i
-.PHONY : db/version_edit.i
-
-# target to preprocess a source file
-db/version_edit.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/version_edit.cpp.i
-.PHONY : db/version_edit.cpp.i
-
-db/version_edit.s: db/version_edit.cpp.s
-.PHONY : db/version_edit.s
-
-# target to generate assembly for a file
-db/version_edit.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/version_edit.cpp.s
-.PHONY : db/version_edit.cpp.s
-
-db/version_set.o: db/version_set.cpp.o
-.PHONY : db/version_set.o
-
-# target to build an object file
-db/version_set.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/version_set.cpp.o
-.PHONY : db/version_set.cpp.o
-
-db/version_set.i: db/version_set.cpp.i
-.PHONY : db/version_set.i
-
-# target to preprocess a source file
-db/version_set.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/version_set.cpp.i
-.PHONY : db/version_set.cpp.i
-
-db/version_set.s: db/version_set.cpp.s
-.PHONY : db/version_set.s
-
-# target to generate assembly for a file
-db/version_set.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/version_set.cpp.s
-.PHONY : db/version_set.cpp.s
-
-db/write_batch.o: db/write_batch.cpp.o
-.PHONY : db/write_batch.o
-
-# target to build an object file
-db/write_batch.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/write_batch.cpp.o
-.PHONY : db/write_batch.cpp.o
-
-db/write_batch.i: db/write_batch.cpp.i
-.PHONY : db/write_batch.i
-
-# target to preprocess a source file
-db/write_batch.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/write_batch.cpp.i
-.PHONY : db/write_batch.cpp.i
-
-db/write_batch.s: db/write_batch.cpp.s
-.PHONY : db/write_batch.s
-
-# target to generate assembly for a file
-db/write_batch.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/db/write_batch.cpp.s
-.PHONY : db/write_batch.cpp.s
-
 table/block.o: table/block.cc.o
 .PHONY : table/block.o
 
@@ -488,30 +272,6 @@ table/block_builder.s: table/block_builder.cc.s
 table/block_builder.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/block_builder.cc.s
 .PHONY : table/block_builder.cc.s
-
-table/filter_block.o: table/filter_block.cpp.o
-.PHONY : table/filter_block.o
-
-# target to build an object file
-table/filter_block.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/filter_block.cpp.o
-.PHONY : table/filter_block.cpp.o
-
-table/filter_block.i: table/filter_block.cpp.i
-.PHONY : table/filter_block.i
-
-# target to preprocess a source file
-table/filter_block.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/filter_block.cpp.i
-.PHONY : table/filter_block.cpp.i
-
-table/filter_block.s: table/filter_block.cpp.s
-.PHONY : table/filter_block.s
-
-# target to generate assembly for a file
-table/filter_block.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/filter_block.cpp.s
-.PHONY : table/filter_block.cpp.s
 
 table/format.o: table/format.cc.o
 .PHONY : table/format.o
@@ -561,102 +321,6 @@ table/iterator.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/iterator.cc.s
 .PHONY : table/iterator.cc.s
 
-table/merger.o: table/merger.cpp.o
-.PHONY : table/merger.o
-
-# target to build an object file
-table/merger.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/merger.cpp.o
-.PHONY : table/merger.cpp.o
-
-table/merger.i: table/merger.cpp.i
-.PHONY : table/merger.i
-
-# target to preprocess a source file
-table/merger.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/merger.cpp.i
-.PHONY : table/merger.cpp.i
-
-table/merger.s: table/merger.cpp.s
-.PHONY : table/merger.s
-
-# target to generate assembly for a file
-table/merger.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/merger.cpp.s
-.PHONY : table/merger.cpp.s
-
-table/table.o: table/table.cpp.o
-.PHONY : table/table.o
-
-# target to build an object file
-table/table.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/table.cpp.o
-.PHONY : table/table.cpp.o
-
-table/table.i: table/table.cpp.i
-.PHONY : table/table.i
-
-# target to preprocess a source file
-table/table.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/table.cpp.i
-.PHONY : table/table.cpp.i
-
-table/table.s: table/table.cpp.s
-.PHONY : table/table.s
-
-# target to generate assembly for a file
-table/table.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/table.cpp.s
-.PHONY : table/table.cpp.s
-
-table/table_builder.o: table/table_builder.cpp.o
-.PHONY : table/table_builder.o
-
-# target to build an object file
-table/table_builder.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/table_builder.cpp.o
-.PHONY : table/table_builder.cpp.o
-
-table/table_builder.i: table/table_builder.cpp.i
-.PHONY : table/table_builder.i
-
-# target to preprocess a source file
-table/table_builder.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/table_builder.cpp.i
-.PHONY : table/table_builder.cpp.i
-
-table/table_builder.s: table/table_builder.cpp.s
-.PHONY : table/table_builder.s
-
-# target to generate assembly for a file
-table/table_builder.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/table_builder.cpp.s
-.PHONY : table/table_builder.cpp.s
-
-table/two_level_iterator.o: table/two_level_iterator.cpp.o
-.PHONY : table/two_level_iterator.o
-
-# target to build an object file
-table/two_level_iterator.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/two_level_iterator.cpp.o
-.PHONY : table/two_level_iterator.cpp.o
-
-table/two_level_iterator.i: table/two_level_iterator.cpp.i
-.PHONY : table/two_level_iterator.i
-
-# target to preprocess a source file
-table/two_level_iterator.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/two_level_iterator.cpp.i
-.PHONY : table/two_level_iterator.cpp.i
-
-table/two_level_iterator.s: table/two_level_iterator.cpp.s
-.PHONY : table/two_level_iterator.s
-
-# target to generate assembly for a file
-table/two_level_iterator.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/table/two_level_iterator.cpp.s
-.PHONY : table/two_level_iterator.cpp.s
-
 util/arena.o: util/arena.cc.o
 .PHONY : util/arena.o
 
@@ -704,30 +368,6 @@ util/bloom.s: util/bloom.cc.s
 util/bloom.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/bloom.cc.s
 .PHONY : util/bloom.cc.s
-
-util/cache.o: util/cache.cpp.o
-.PHONY : util/cache.o
-
-# target to build an object file
-util/cache.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/cache.cpp.o
-.PHONY : util/cache.cpp.o
-
-util/cache.i: util/cache.cpp.i
-.PHONY : util/cache.i
-
-# target to preprocess a source file
-util/cache.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/cache.cpp.i
-.PHONY : util/cache.cpp.i
-
-util/cache.s: util/cache.cpp.s
-.PHONY : util/cache.s
-
-# target to generate assembly for a file
-util/cache.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/cache.cpp.s
-.PHONY : util/cache.cpp.s
 
 util/coding.o: util/coding.cc.o
 .PHONY : util/coding.o
@@ -801,54 +441,6 @@ util/crc32c.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/crc32c.cc.s
 .PHONY : util/crc32c.cc.s
 
-util/env.o: util/env.cpp.o
-.PHONY : util/env.o
-
-# target to build an object file
-util/env.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/env.cpp.o
-.PHONY : util/env.cpp.o
-
-util/env.i: util/env.cpp.i
-.PHONY : util/env.i
-
-# target to preprocess a source file
-util/env.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/env.cpp.i
-.PHONY : util/env.cpp.i
-
-util/env.s: util/env.cpp.s
-.PHONY : util/env.s
-
-# target to generate assembly for a file
-util/env.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/env.cpp.s
-.PHONY : util/env.cpp.s
-
-util/env_posix.o: util/env_posix.cc.o
-.PHONY : util/env_posix.o
-
-# target to build an object file
-util/env_posix.cc.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/env_posix.cc.o
-.PHONY : util/env_posix.cc.o
-
-util/env_posix.i: util/env_posix.cc.i
-.PHONY : util/env_posix.i
-
-# target to preprocess a source file
-util/env_posix.cc.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/env_posix.cc.i
-.PHONY : util/env_posix.cc.i
-
-util/env_posix.s: util/env_posix.cc.s
-.PHONY : util/env_posix.s
-
-# target to generate assembly for a file
-util/env_posix.cc.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/env_posix.cc.s
-.PHONY : util/env_posix.cc.s
-
 util/filter_policy.o: util/filter_policy.cc.o
 .PHONY : util/filter_policy.o
 
@@ -897,54 +489,6 @@ util/hash.cc.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/hash.cc.s
 .PHONY : util/hash.cc.s
 
-util/logging.o: util/logging.cpp.o
-.PHONY : util/logging.o
-
-# target to build an object file
-util/logging.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/logging.cpp.o
-.PHONY : util/logging.cpp.o
-
-util/logging.i: util/logging.cpp.i
-.PHONY : util/logging.i
-
-# target to preprocess a source file
-util/logging.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/logging.cpp.i
-.PHONY : util/logging.cpp.i
-
-util/logging.s: util/logging.cpp.s
-.PHONY : util/logging.s
-
-# target to generate assembly for a file
-util/logging.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/logging.cpp.s
-.PHONY : util/logging.cpp.s
-
-util/options.o: util/options.cpp.o
-.PHONY : util/options.o
-
-# target to build an object file
-util/options.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/options.cpp.o
-.PHONY : util/options.cpp.o
-
-util/options.i: util/options.cpp.i
-.PHONY : util/options.i
-
-# target to preprocess a source file
-util/options.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/options.cpp.i
-.PHONY : util/options.cpp.i
-
-util/options.s: util/options.cpp.s
-.PHONY : util/options.s
-
-# target to generate assembly for a file
-util/options.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/leveldb.dir/build.make CMakeFiles/leveldb.dir/util/options.cpp.s
-.PHONY : util/options.cpp.s
-
 util/status.o: util/status.cc.o
 .PHONY : util/status.o
 
@@ -978,24 +522,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... leveldb"
-	@echo "... db/builder.o"
-	@echo "... db/builder.i"
-	@echo "... db/builder.s"
-	@echo "... db/db_impl.o"
-	@echo "... db/db_impl.i"
-	@echo "... db/db_impl.s"
-	@echo "... db/db_iter.o"
-	@echo "... db/db_iter.i"
-	@echo "... db/db_iter.s"
 	@echo "... db/dbformat.o"
 	@echo "... db/dbformat.i"
 	@echo "... db/dbformat.s"
-	@echo "... db/dumpfile.o"
-	@echo "... db/dumpfile.i"
-	@echo "... db/dumpfile.s"
-	@echo "... db/filename.o"
-	@echo "... db/filename.i"
-	@echo "... db/filename.s"
 	@echo "... db/log_reader.o"
 	@echo "... db/log_reader.i"
 	@echo "... db/log_reader.s"
@@ -1005,54 +534,24 @@ help:
 	@echo "... db/memtable.o"
 	@echo "... db/memtable.i"
 	@echo "... db/memtable.s"
-	@echo "... db/table_cache.o"
-	@echo "... db/table_cache.i"
-	@echo "... db/table_cache.s"
-	@echo "... db/version_edit.o"
-	@echo "... db/version_edit.i"
-	@echo "... db/version_edit.s"
-	@echo "... db/version_set.o"
-	@echo "... db/version_set.i"
-	@echo "... db/version_set.s"
-	@echo "... db/write_batch.o"
-	@echo "... db/write_batch.i"
-	@echo "... db/write_batch.s"
 	@echo "... table/block.o"
 	@echo "... table/block.i"
 	@echo "... table/block.s"
 	@echo "... table/block_builder.o"
 	@echo "... table/block_builder.i"
 	@echo "... table/block_builder.s"
-	@echo "... table/filter_block.o"
-	@echo "... table/filter_block.i"
-	@echo "... table/filter_block.s"
 	@echo "... table/format.o"
 	@echo "... table/format.i"
 	@echo "... table/format.s"
 	@echo "... table/iterator.o"
 	@echo "... table/iterator.i"
 	@echo "... table/iterator.s"
-	@echo "... table/merger.o"
-	@echo "... table/merger.i"
-	@echo "... table/merger.s"
-	@echo "... table/table.o"
-	@echo "... table/table.i"
-	@echo "... table/table.s"
-	@echo "... table/table_builder.o"
-	@echo "... table/table_builder.i"
-	@echo "... table/table_builder.s"
-	@echo "... table/two_level_iterator.o"
-	@echo "... table/two_level_iterator.i"
-	@echo "... table/two_level_iterator.s"
 	@echo "... util/arena.o"
 	@echo "... util/arena.i"
 	@echo "... util/arena.s"
 	@echo "... util/bloom.o"
 	@echo "... util/bloom.i"
 	@echo "... util/bloom.s"
-	@echo "... util/cache.o"
-	@echo "... util/cache.i"
-	@echo "... util/cache.s"
 	@echo "... util/coding.o"
 	@echo "... util/coding.i"
 	@echo "... util/coding.s"
@@ -1062,24 +561,12 @@ help:
 	@echo "... util/crc32c.o"
 	@echo "... util/crc32c.i"
 	@echo "... util/crc32c.s"
-	@echo "... util/env.o"
-	@echo "... util/env.i"
-	@echo "... util/env.s"
-	@echo "... util/env_posix.o"
-	@echo "... util/env_posix.i"
-	@echo "... util/env_posix.s"
 	@echo "... util/filter_policy.o"
 	@echo "... util/filter_policy.i"
 	@echo "... util/filter_policy.s"
 	@echo "... util/hash.o"
 	@echo "... util/hash.i"
 	@echo "... util/hash.s"
-	@echo "... util/logging.o"
-	@echo "... util/logging.i"
-	@echo "... util/logging.s"
-	@echo "... util/options.o"
-	@echo "... util/options.i"
-	@echo "... util/options.s"
 	@echo "... util/status.o"
 	@echo "... util/status.i"
 	@echo "... util/status.s"

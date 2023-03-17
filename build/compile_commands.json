@@ -1,177 +1,82 @@
 [
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/filter_block.cpp.o -c /Users/Ap0l1o/project/LLevelDB/table/filter_block.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/filter_block.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/dbformat.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/db/dbformat.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/db/dbformat.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/table_builder.cpp.o -c /Users/Ap0l1o/project/LLevelDB/table/table_builder.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/table_builder.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/log_reader.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/db/log_reader.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/db/log_reader.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/env.cpp.o -c /Users/Ap0l1o/project/LLevelDB/util/env.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/env.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/log_writer.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/db/log_writer.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/db/log_writer.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/table.cpp.o -c /Users/Ap0l1o/project/LLevelDB/table/table.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/table.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/memtable.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/db/memtable.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/db/memtable.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/two_level_iterator.cpp.o -c /Users/Ap0l1o/project/LLevelDB/table/two_level_iterator.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/two_level_iterator.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/block_builder.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/table/block_builder.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/table/block_builder.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/cache.cpp.o -c /Users/Ap0l1o/project/LLevelDB/util/cache.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/cache.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/block.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/table/block.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/table/block.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/table_cache.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/table_cache.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/table_cache.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/format.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/table/format.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/table/format.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/filename.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/filename.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/filename.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/iterator.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/table/iterator.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/table/iterator.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/logging.cpp.o -c /Users/Ap0l1o/project/LLevelDB/util/logging.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/logging.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/arena.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/arena.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/arena.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/env_posix.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/env_posix.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/env_posix.cc"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/bloom.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/bloom.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/bloom.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/version_edit.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/version_edit.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/version_edit.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/coding.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/coding.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/coding.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/version_set.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/version_set.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/version_set.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/comparator.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/comparator.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/comparator.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/merger.cpp.o -c /Users/Ap0l1o/project/LLevelDB/table/merger.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/merger.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/crc32c.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/crc32c.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/crc32c.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/builder.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/builder.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/builder.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/filter_policy.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/filter_policy.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/filter_policy.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/dumpfile.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/dumpfile.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/dumpfile.cpp"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/hash.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/hash.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/hash.cc"
 },
 {
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/write_batch.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/write_batch.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/write_batch.cpp"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/db_iter.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/db_iter.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/db_iter.cpp"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/db_impl.cpp.o -c /Users/Ap0l1o/project/LLevelDB/db/db_impl.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/db_impl.cpp"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/options.cpp.o -c /Users/Ap0l1o/project/LLevelDB/util/options.cpp",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/options.cpp"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/dbformat.cc.o -c /Users/Ap0l1o/project/LLevelDB/db/dbformat.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/dbformat.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/log_reader.cc.o -c /Users/Ap0l1o/project/LLevelDB/db/log_reader.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/log_reader.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/log_writer.cc.o -c /Users/Ap0l1o/project/LLevelDB/db/log_writer.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/log_writer.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/db/memtable.cc.o -c /Users/Ap0l1o/project/LLevelDB/db/memtable.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/db/memtable.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/block_builder.cc.o -c /Users/Ap0l1o/project/LLevelDB/table/block_builder.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/block_builder.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/block.cc.o -c /Users/Ap0l1o/project/LLevelDB/table/block.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/block.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/format.cc.o -c /Users/Ap0l1o/project/LLevelDB/table/format.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/format.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/table/iterator.cc.o -c /Users/Ap0l1o/project/LLevelDB/table/iterator.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/table/iterator.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/arena.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/arena.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/arena.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/bloom.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/bloom.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/bloom.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/coding.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/coding.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/coding.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/comparator.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/comparator.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/comparator.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/crc32c.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/crc32c.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/crc32c.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/filter_policy.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/filter_policy.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/filter_policy.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/hash.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/hash.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/hash.cc"
-},
-{
-  "directory": "/Users/Ap0l1o/project/LLevelDB/build",
-  "command": "/usr/bin/clang++  -I/Users/Ap0l1o/project/LLevelDB/. -I/Users/Ap0l1o/project/LLevelDB/include -g -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/status.cc.o -c /Users/Ap0l1o/project/LLevelDB/util/status.cc",
-  "file": "/Users/Ap0l1o/project/LLevelDB/util/status.cc"
+  "directory": "/Users/Ap0l1o/my-projects/LLevelDB/build",
+  "command": "/Library/Developer/CommandLineTools/usr/bin/c++  -I/Users/Ap0l1o/my-projects/LLevelDB/. -I/Users/Ap0l1o/my-projects/LLevelDB/include -I/Users/Ap0l1o/my-projects/LLevelDB  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk -std=c++11 -o CMakeFiles/leveldb.dir/util/status.cc.o -c /Users/Ap0l1o/my-projects/LLevelDB/util/status.cc",
+  "file": "/Users/Ap0l1o/my-projects/LLevelDB/util/status.cc"
 }
 ]
